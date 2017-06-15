@@ -17,6 +17,8 @@
 !/log/.keep
 !/tmp/.keep
 
+config/local_env.yml
+
 /node_modules
 /yarn-error.log
 
