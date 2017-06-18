@@ -4,8 +4,11 @@ FactoryGirl.define do
     sequence :email do |n|
       "person#{n}@example.com"
     end
+    sequence :uid do |n|
+      n
+    end
     image Faker::Internet.url
-    provider Faker::Name.name
+    provider 'github'
     teams []
   end
 end

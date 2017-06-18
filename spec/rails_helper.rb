@@ -1,4 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
@@ -26,9 +27,12 @@ end
 Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
+
   # Include site prism page objects
   Dir[Rails.root.join('spec/page_objects/**/*.rb')].sort { |path| path.include?('shared') ? 0 : 1 }
                                                  .each { |f| require f }
+
+  Dir[Rails.root.join('spec/support/*.rb')].each { |f| require f }
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
