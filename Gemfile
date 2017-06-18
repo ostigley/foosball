@@ -20,8 +20,10 @@ gem 'omniauth-google-oauth2'
 gem 'turbolinks', '~> 5'
 gem 'pry'
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
+  gem 'factory_girl_rails'
+  gem 'faker', branch: 'master', git: 'https://github.com/stympy/faker.git'
+  gem 'rspec-rails'
   gem 'selenium-webdriver'
 end
 
