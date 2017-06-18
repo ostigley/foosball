@@ -7,7 +7,15 @@ class TeamsController < ApplicationController
   end
 
   def create
+    @team = Team.new
+    @team.players = [current_player]
+    @team.players << Player.find_by_id(team_params[:player_ids])
 
+    if @team.save!
+      redirect_to teams_path
+    else
+      render :new
+    end
   end
 
   def index
@@ -20,8 +28,7 @@ class TeamsController < ApplicationController
     redirect_to new_player_session_path unless player_signed_in?
   end
 
+  def team_params
+    params.require(:team).permit(:player_ids)
+  end
 end
-
-
-# new: user must be signed in or direct to sign in page with flash message
-# new: send all other players minus current player, and current players as player 1
