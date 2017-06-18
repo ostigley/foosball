@@ -1,13 +1,13 @@
 
-def set_omniauth
+def set_omniauth(player)
   OmniAuth.config.test_mode = true
   OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(
     provider: 'github',
-    uid: '123545',
+    uid: player.uid,
     info: {
-      email: 'foobar@example.com',
+      email: player.email,
       image: 'https://avatars1.githubusercontent.com/u/10747958?v=3',
-      name: 'Oliver'
+      name: player.name
     }
   )
   Rails.application.env_config['devise.mapping'] = Devise.mappings[:player]
