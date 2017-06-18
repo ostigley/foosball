@@ -18,13 +18,16 @@ gem 'jbuilder', '~> 2.5'
 gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 gem 'turbolinks', '~> 5'
-gem 'pry'
+
 group :development, :test do
-  gem 'capybara', '~> 2.13'
+  gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'factory_girl_rails'
   gem 'faker', branch: 'master', git: 'https://github.com/stympy/faker.git'
+  gem 'poltergeist'
+  gem 'pry'
   gem 'rspec-rails'
-  gem 'selenium-webdriver'
+  gem 'site_prism'
 end
 
 group :development do
