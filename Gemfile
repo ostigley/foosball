@@ -13,10 +13,12 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
+gem 'foundation-rails'
 gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
+gem 'simple_form'
 gem 'turbolinks', '~> 5'
 
 group :development, :test do
