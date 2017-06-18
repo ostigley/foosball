@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.feature 'New team page', type: :feature do
   let(:new_team_page) { NewTeam.new }
@@ -31,6 +31,15 @@ RSpec.feature 'New team page', type: :feature do
         players.each do |player|
           expect(page).to have_content(player.name)
         end
+      end
+    end
+
+    context 'createing a new team' do
+      scenario 'renders the teams index page' do
+        new_team_page.players.first.click
+        new_team_page.submit_button.click
+        expect(page.current_path).to eq '/teams'
+        expect(page).to have_content("#{signed_in_player.name} & #{players.first.name}")
       end
     end
   end
