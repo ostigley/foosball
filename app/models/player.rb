@@ -5,8 +5,12 @@ class Player < ApplicationRecord
   has_and_belongs_to_many :teams
 
   devise :registerable, :rememberable
-
   devise :omniauthable, omniauth_providers: [:github]
+
+  scope :exclude_current_player, ->(signed_in_player) {
+    where.not(id: signed_in_player.id)
+  }
+
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |player|
@@ -18,6 +22,7 @@ class Player < ApplicationRecord
       # player.skip_confirmation!
     end
   end
+
 
   # Un comment and customise when you want to use data (image etc) from oauth provider
   # def self.new_with_session(params, session)

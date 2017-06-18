@@ -2,7 +2,8 @@ class TeamsController < ApplicationController
   before_action :require_login, only: [:new, :create]
 
   def new
-    @player1 = current_player
+    @team = Team.new
+    @players = Player.exclude_current_player current_player
   end
 
   def create

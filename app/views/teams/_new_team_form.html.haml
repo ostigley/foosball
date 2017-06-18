@@ -1,0 +1,5 @@
+#new-team-form
+  = simple_form_for @team do |f|
+    %p Choose your team mate
+    = f.association :players, collection: @players, as: :radio_buttons
+    = f.button :submit
