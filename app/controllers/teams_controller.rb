@@ -24,10 +24,6 @@ class TeamsController < ApplicationController
 
   private
 
-  def require_login
-    redirect_to new_player_session_path unless player_signed_in?
-  end
-
   def team_params
     params.require(:team).permit(:player_ids)
   end

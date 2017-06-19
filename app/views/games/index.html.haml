@@ -1,2 +1,5 @@
-%h1 Games#index
-%p Find me in app/views/games/index.html.haml
+%h1 Games
+
+- @games.each do |game|
+  %p
+    = game_players(game)

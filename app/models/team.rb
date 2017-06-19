@@ -6,4 +6,12 @@ class Team < ApplicationRecord
   validates_associated :players
   validates :players, length: { is: 2,
                                 message: 'A team needs exactly two players' }
+
+  scope :exclude_player_teams, ->(signed_in_player_teams) {
+    all - signed_in_player_teams
+  }
+
+  def team_name
+    "#{players.first.name} & #{players.second.name}"
+  end
 end
