@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :team do
+  factory :game do
   end
 end

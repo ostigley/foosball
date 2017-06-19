@@ -1,5 +1,6 @@
 # Team model
 class Team < ApplicationRecord
+  has_and_belongs_to_many :games
   has_and_belongs_to_many :players
 
   validates_associated :players
