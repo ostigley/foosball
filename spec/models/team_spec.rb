@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 # Testing player mode
 RSpec.describe Team, type: :model do
