@@ -11,7 +11,6 @@ class Player < ApplicationRecord
     where.not(id: signed_in_player.id)
   }
 
-
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |player|
       player.email = auth.info.email
@@ -23,6 +22,13 @@ class Player < ApplicationRecord
     end
   end
 
+  def team_mates
+    team_mates = []
+    teams.each do |team|
+      team_mates << team.players - [self]
+    end
+    team_mates.flatten
+  end
 
   # Un comment and customise when you want to use data (image etc) from oauth provider
   # def self.new_with_session(params, session)

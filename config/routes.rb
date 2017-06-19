@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   post 'teams', to: 'teams#create'
   get 'teams', to: 'teams#index'
 
+  # Games
+  get 'games/new', to: 'games#new'
+  post 'games', to: 'games#create'
+  get 'games', to: 'games#index'
+
   devise_for :players, :controllers => { :omniauth_callbacks => "players/omniauth_callbacks" }
 
   devise_scope :player do
