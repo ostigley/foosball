@@ -23,6 +23,7 @@ gem 'simple_form'
 gem 'turbolinks', '~> 5'
 
 group :development, :test do
+  gem 'better_errors'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'factory_girl_rails'
