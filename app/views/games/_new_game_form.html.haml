@@ -1,4 +1,4 @@
-#new-game-form
+.small-12.columns#new-game-form
   = simple_form_for @game do |f|
-    =f.association :teams, collection: @teams, as: :check_boxes, label_method: :team_name, input_html: {class: 'team-option'}
+    =f.association :teams, label: 'Pick the matchup', collection: @teams, as: :check_boxes, label_method: :team_name, input_html: {class: 'team-option'}
     =f.button :submit, id: 'submit-new-game'

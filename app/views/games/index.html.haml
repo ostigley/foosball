@@ -1,4 +1,7 @@
-%h1 Games
-- @games.each do |game|
-  %p
-    = game_name(game)
+.row
+  .columns
+    .small-12.columns
+      %h1 All The Games
+      - @games.each do |game|
+        %p
+          = game_name(game)

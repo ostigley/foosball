@@ -13,7 +13,11 @@
 
   %body
     - if player_signed_in?
-      %p
-        = "Hello #{current_player.name}"
-      %img{ src: current_player.image }
+      .row
+        .columns
+          .small-2.columns
+            %img{ src: current_player.image }
+          .small-10.columns
+            %p
+              = "Hello #{current_player.name}"
     = yield

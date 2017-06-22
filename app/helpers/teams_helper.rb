@@ -4,6 +4,8 @@ module TeamsHelper
   end
 
   def game_name(game)
-    "#{game.teams.first.team_name} Vs #{game.teams.second.team_name}"
+    "<p>#{game.teams.first.team_name}</p>
+    <p>|Vs|</p>
+    <p>#{game.teams.second.team_name}</p>".html_safe
   end
 end
