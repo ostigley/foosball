@@ -1,8 +1,4 @@
 #new-game-form
   = simple_form_for @game do |f|
-    %p You and...
-    =f.association :teams, collection: @player_teams, label_method: :team_mate, as: :radio_buttons
-
-    %p to play...
-    =f.association :teams, collection: @teams, label_method: :team_name, as: :radio_buttons
+    =f.association :teams, collection: @teams, as: :check_boxes, label_method: :team_name, input_html: {class: 'team-option'}
     =f.button :submit, id: 'submit-new-game'

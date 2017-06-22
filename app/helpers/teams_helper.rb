@@ -4,6 +4,6 @@ module TeamsHelper
   end
 
   def game_name(game)
-    "#{game.team.players.first.name} Vs #{game.team.players.second.name}"
+    "#{game.teams.first.team_name} Vs #{game.teams.second.team_name}"
   end
 end
