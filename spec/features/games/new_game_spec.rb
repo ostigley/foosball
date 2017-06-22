@@ -36,19 +36,17 @@ RSpec.feature 'New game page', type: :feature do
         expect(page).to have_content(team1.team_name)
         expect(page).to have_content(team2.team_name)
       end
-
-      scenario 'doesn\'t render the logged in player\'s teams' do
-        expect(page).to_not have_content(team3.team_name)
-      end
     end
 
-    # context 'createing a new team' do
-    #   scenario 'renders the teams index page' do
-    #     new_team_page.players.first.click
-    #     new_team_page.submit_button.click
-    #     expect(page.current_path).to eq '/teams'
-    #     expect(page).to have_content("#{signed_in_player.name} & #{players.first.name}")
-    #   end
-    # end
+    context 'createing a new team' do
+      scenario 'renders the teams index page' do
+        new_game_page.teams[0].click
+        new_game_page.teams[2].click
+        new_game_page.submit.click
+
+        expect(page.current_path).to match '/games?'
+        # expect(page).to have_content("#{signed_in_player.name} & #{players.first.name}")
+      end
+    end
   end
 end
