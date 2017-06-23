@@ -10,21 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170619062144) do
+ActiveRecord::Schema.define(version: 20170623043527) do
 
-  create_table "games", force: :cascade do |t|
+  create_table "games", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "games_teams", id: false, force: :cascade do |t|
+  create_table "games_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "game_id", null: false
     t.integer "team_id", null: false
     t.index ["game_id", "team_id"], name: "index_games_teams_on_game_id_and_team_id"
     t.index ["team_id", "game_id"], name: "index_games_teams_on_team_id_and_game_id"
   end
 
-  create_table "players", force: :cascade do |t|
+  create_table "losers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "game_id"
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_losers_on_game_id"
+    t.index ["team_id"], name: "index_losers_on_team_id"
+  end
+
+  create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -45,14 +54,23 @@ ActiveRecord::Schema.define(version: 20170619062144) do
     t.index ["reset_password_token"], name: "index_players_on_reset_password_token", unique: true
   end
 
-  create_table "players_teams", id: false, force: :cascade do |t|
+  create_table "players_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "player_id", null: false
     t.integer "team_id", null: false
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "winners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "game_id"
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_winners_on_game_id"
+    t.index ["team_id"], name: "index_winners_on_team_id"
   end
 
 end
