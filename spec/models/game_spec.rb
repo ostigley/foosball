@@ -7,16 +7,15 @@ RSpec.describe Game, type: :model do
   let(:team2) { build(:team) }
   let(:game) { build(:game) }
 
+  before do
+    team1.players = [players.first, players.second]
+    team2.players = [players.third, players.fourth]
+    team1.save!
+    team2.save!
+  end
   describe 'A New game' do
-    before do
-      team1.players = [players.first, players.second]
-      team2.players = [players.third, players.fourth]
-      team1.save!
-      team2.save!
-    end
 
     it 'is valid with two teams' do
-      # binding.pry
       game.teams = [team1, team2]
       game.save!
       expect(game.valid?).to be true
@@ -28,4 +27,29 @@ RSpec.describe Game, type: :model do
       expect(game.valid?).to be false
     end
   end
+
+  describe 'Assigning a winner' do
+    it 'saves a new winner' do
+      game.teams = [team1, team2]
+      team1.save
+      game.create_winner({team: team1})
+      game.save
+
+      expect(game.valid?).to be true
+      expect(Winner.all.count).to eq 1
+    end
+  end
+
+  describe 'Assigning a Loser' do
+    it 'saves a new loser' do
+      game.teams = [team1, team2]
+      team1.save
+      game.create_loser({team: team2})
+      game.save
+
+      expect(game.valid?).to be true
+      expect(Loser.all.count).to eq 1
+    end
+  end
+
 end
