@@ -24,6 +24,7 @@ gem 'turbolinks', '~> 5'
 
 group :development, :test do
   gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'factory_girl_rails'
