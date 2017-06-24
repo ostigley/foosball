@@ -2,23 +2,26 @@ require 'rails_helper'
 
 # Testing player mode
 RSpec.describe Player, type: :model do
-  describe 'Players' do
-    let(:player) { create(:player) }
-    let(:team) { build(:team) }
+  let(:players) { create_list(:player, 3) }
+  let(:teams) { create_list(:team, 2, :full_team) }
+  describe 'Player attributes' do
 
     it 'have name' do
-      expect(player.name.present?).to be true
+      expect(players.first.name.present?).to be true
+    end
+
+    it 'have email' do
+      expect(players.first.email.present?).to be true
     end
   end
 
-  let(:players) { create_list(:player, 3) }
-  let(:team1) { create(:team, players: [players.first, players.second]) }
-  let(:team2) { create(:team, players: [players.first, players.third]) }
+  describe 'Player teams' do
+    it 'can have many teams' do
+      teams.first.players = players.first(2)
+      teams.second.players = players.first(2)
 
-  describe 'A player can' do
-    it 'have many teams' do
-      expect(team1.valid?).to be true
-      expect(team2.valid?).to be true
+      expect(teams.first.valid?).to be true
+      expect(teams.first.valid?).to be true
     end
   end
 end

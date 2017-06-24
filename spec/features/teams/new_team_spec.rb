@@ -4,7 +4,6 @@ RSpec.feature 'New team page', type: :feature do
   let(:new_team_page) { NewTeam.new }
   let(:sign_in_page) { SignInPage.new }
   let(:signed_in_player) { create(:player) }
-  let(:players) { create_list(:player, 5) }
 
   context 'for non-logged in users' do
     scenario 'redirects to sign in page' do
@@ -18,7 +17,7 @@ RSpec.feature 'New team page', type: :feature do
       set_omniauth(signed_in_player)
       sign_in_page.load
       sign_in_page.github.click
-      players
+      @players = create_list(:player, 5)
       new_team_page.load
     end
 
@@ -28,7 +27,7 @@ RSpec.feature 'New team page', type: :feature do
 
     context 'the new team form' do
       scenario 'renders the list of players' do
-        players.each do |player|
+        @players.each do |player|
           expect(page).to have_content(player.name)
         end
       end
@@ -39,7 +38,7 @@ RSpec.feature 'New team page', type: :feature do
         new_team_page.players.first.click
         new_team_page.submit_button.click
         expect(page.current_path).to eq '/teams'
-        expect(page).to have_content("#{signed_in_player.name} & #{players.first.name}")
+        expect(page).to have_content("#{signed_in_player.name} & #{@players.first.name}")
       end
     end
   end

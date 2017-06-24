@@ -5,11 +5,6 @@ RSpec.feature 'New game page', type: :feature do
   let(:sign_in_page) { SignInPage.new }
 
   let(:signed_in_player) { create(:player) }
-  let(:players) { create_list(:player, 5) }
-  let(:team1) { create(:team, players: [players.first, players.second]) }
-  let(:team2) { create(:team, players: [players.third, players.fourth]) }
-  let(:team3) { create(:team, players: [signed_in_player, players.first]) }
-  let(:game) { build(:game) }
 
   context 'for non-logged in users' do
     scenario 'redirects to sign in page' do
@@ -20,10 +15,10 @@ RSpec.feature 'New game page', type: :feature do
 
   context 'for logged in users' do
     before do
+      @teams = create_list(:team, 3, :full_team)
       set_omniauth(signed_in_player)
       sign_in_page.load
       sign_in_page.github.click
-      [players, team1, team2, team3]
       new_game_page.load
     end
 
@@ -33,8 +28,8 @@ RSpec.feature 'New game page', type: :feature do
 
     context 'the new team form' do
       scenario 'renders the list of teams' do
-        expect(page).to have_content(team1.team_name)
-        expect(page).to have_content(team2.team_name)
+        expect(page).to have_content(@teams.first.team_name)
+        expect(page).to have_content(@teams.second.team_name)
       end
     end
 
@@ -45,7 +40,6 @@ RSpec.feature 'New game page', type: :feature do
         new_game_page.submit.click
 
         expect(page.current_path).to match '/games?'
-        # expect(page).to have_content("#{signed_in_player.name} & #{players.first.name}")
       end
     end
   end
