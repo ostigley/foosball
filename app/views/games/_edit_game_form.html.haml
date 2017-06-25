@@ -1,4 +1,4 @@
-.edit_game_form.small-12.columns
+.edit-game-form.small-12.columns
   = simple_form_for @game, url: games_path(id: @game.id) do |f|
-    = f.input :winner, collection: @game.teams, label_method: :team_name, as: :radio_buttons, include_hidden: false
-    = f.submit, input_html: { id: 'submit'}
+    = f.input :winner, collection: @game.teams, label_method: :team_name, as: :radio_buttons, include_hidden: false, input_html: {class: 'edit-game-form__radio-buttons'}
+    = f.submit id: 'submit'
