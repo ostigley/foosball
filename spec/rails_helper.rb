@@ -8,8 +8,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'capybara'
 require 'capybara/rspec'
-require 'capybara/poltergeist'
 require 'capybara-screenshot/rspec'
+require 'capybara/poltergeist'
 require 'site_prism'
 
 ActiveRecord::Migration.maintain_test_schema!
@@ -18,6 +18,8 @@ Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
   "screenshot_#{example.description.tr(' ', '-').gsub(%r{^.*\/spec\/}, '')}"
 end
 Capybara::Screenshot.prune_strategy = :keep_last_run
+Capybara.asset_host = 'http://localhost:3000'
+Capybara::Screenshot.autosave_on_failure = false
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, js_errors: false)

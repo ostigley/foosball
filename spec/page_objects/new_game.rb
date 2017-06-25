@@ -7,6 +7,6 @@ class NewGame < SitePrism::Page
   element :submit_button, 'input#submit-new-game'
 
   # Select boxes
-  elements :teams, 'div.checkbox'
+  elements :teams, '.check_boxes'
   element :submit, '#submit-new-game'
 end

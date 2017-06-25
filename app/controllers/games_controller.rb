@@ -3,6 +3,7 @@ class GamesController < ApplicationController
   before_action :require_login, only: [:new, :create, :edit, :update]
   before_action :find_game, only: [:show, :edit, :update]
   before_action :player_in_game, only: [:edit, :update]
+  before_action :already_has_winner, only: [:edit, :update]
   before_action :select_team, only: [:update]
 
   def new
@@ -11,13 +12,16 @@ class GamesController < ApplicationController
   end
 
   def create
-    game_params[:team_ids].delete("")
     team_ids = game_params[:team_ids]
-    team_ids.shift
     @game = Game.new
-    @game.teams = [ Team.find_by_id(team_ids.first), Team.find_by_id(team_ids.second) ]
+    # @game.teams = [
+    #   Team.find_by_id(team_ids.first),
+    #   Team.find_by_id(team_ids.second)
+    # ]
+    @game.team_ids = team_ids
 
     if @game.save
+      flash[:success] = 'It\'s on like donkey kong'
       redirect_to games_path id: @game.id
     else
       render 'new'
@@ -44,6 +48,12 @@ class GamesController < ApplicationController
 
   def find_game
     @game ||= Game.find_by_id(params[:id])
+  end
+
+  def already_has_winner
+    return unless @game.winner
+    flash[:notice] = 'That game already has a winner'
+    redirect_to games_index_path
   end
 
   def player_in_game

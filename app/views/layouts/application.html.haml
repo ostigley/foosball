@@ -12,6 +12,25 @@
     = csrf_meta_tag
 
   %body
+
+    - if flash[:notice]
+      .callout.success.radius{"data-closable" => ""}
+        = flash[:notice]
+        %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+
+    - if flash[:alert]
+      .alert.callout.alert.radius{"data-closable" => ""}
+        = flash[:alert]
+        %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+
+    - if flash[:success]
+      .callout.success.radius{"data-closable" => ""}
+        = flash[:success]
+        %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+
     - if player_signed_in?
       .row
         .columns

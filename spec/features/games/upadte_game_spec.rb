@@ -58,5 +58,24 @@ RSpec.feature 'Updating a game', type: :feature do
 
       scenario 'lets the player confirm the winner'
     end
+
+    context 'for games that already have a winner' do
+      before do
+        @game.create_winner(team: @game.teams.first)
+        signed_in_player = @game.players.first
+        set_omniauth(signed_in_player)
+
+        sign_in_page.load
+        sign_in_page.github.click
+        edit_game_page.load(id: @game.id)
+      end
+      scenario 'redirects to game index if a game already has a winner' do
+        expect(page.current_path).to eq games_index_path
+      end
+
+      scenario 'show flash  message if a game already has a winner' do
+        expect(page).to have_content 'That game already has a winner'
+      end
+    end
   end
  end
