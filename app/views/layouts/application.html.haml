@@ -12,7 +12,6 @@
     = csrf_meta_tag
 
   %body
-
     - if flash[:notice]
       .callout.success.radius{"data-closable" => ""}
         = flash[:notice]
@@ -30,13 +29,6 @@
         = flash[:success]
         %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", :type => "button"}
           %span{"aria-hidden" => "true"} ×
+    = render 'layouts/nav'
 
-    - if player_signed_in?
-      .row
-        .columns
-          .small-2.columns
-            %img{ src: current_player.image }
-          .small-10.columns
-            %p
-              = "Hello #{current_player.name}"
     = yield

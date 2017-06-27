@@ -1,0 +1,20 @@
+.title-bar{"data-hide-for" => "medium", "data-responsive-toggle" => "example-menu"}
+  %button.menu-icon{"data-toggle" => "example-menu", :type => "button"}
+  .title-bar-title Menu
+.top-bar.navigation
+  .top-bar-left
+    %ul.dropdown.menu{"data-dropdown-menu" => ""}
+      %li.menu-text Boosball
+      %li
+        = link_to 'New Team', teams_new_path
+      %li
+        = link_to 'New Game', games_new_path
+  .top-bar-right
+    - if player_signed_in?
+      %ul.menu
+        %li
+          %img{ src: current_player.image }
+    - else
+      %ul.menu
+        %li
+          = link_to 'Sign In', new_player_session_path
