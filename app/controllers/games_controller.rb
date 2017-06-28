@@ -18,10 +18,11 @@ class GamesController < ApplicationController
     @game = Game.new(team_ids: team_ids)
 
     if @game.save
-      flash[:success] = 'It\'s on like donkey kong'
+      flash[:success] = Faker::ChuckNorris.fact
       redirect_to games_path id: @game.id
     else
-      render 'new'
+      flash[:alert] = @game.errors.full_messages.to_sentence
+      redirect_to games_new_path
     end
   end
 

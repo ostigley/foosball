@@ -9,12 +9,18 @@ RSpec.describe Game, type: :model do
   describe 'A New game' do
     it 'is valid with two teams' do
       game.teams = teams
-      game.save!
+      game.save
       expect(game.valid?).to be true
     end
 
     it 'is invalid without exactly teams' do
       game.teams = [teams.first]
+      game.save
+      expect(game.valid?).to be false
+    end
+
+    it 'is invalid if the players are not unique' do
+      game.teams = [teams.first, teams.first]
       game.save
       expect(game.valid?).to be false
     end
