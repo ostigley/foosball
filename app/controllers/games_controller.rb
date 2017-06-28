@@ -1,5 +1,7 @@
 # Games controller
 class GamesController < ApplicationController
+  include Results
+
   before_action :require_login, only: [:new, :create, :edit, :update]
   before_action :find_game, only: [:show, :edit, :update]
   before_action :player_in_game, only: [:edit, :update]
@@ -13,12 +15,7 @@ class GamesController < ApplicationController
 
   def create
     team_ids = game_params[:team_ids]
-    @game = Game.new
-    # @game.teams = [
-    #   Team.find_by_id(team_ids.first),
-    #   Team.find_by_id(team_ids.second)
-    # ]
-    @game.team_ids = team_ids
+    @game = Game.new(team_ids: team_ids)
 
     if @game.save
       flash[:success] = 'It\'s on like donkey kong'
@@ -33,7 +30,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    if @game.create_winner(team: @team)
+    if Results::Result.new(@game, @winning_team).set_winner
       redirect_to games_path id: @game.id
     else
       flash[:notice] = @game.errors
@@ -61,7 +58,7 @@ class GamesController < ApplicationController
   end
 
   def select_team
-    @team = @game.teams.find { |team| team.id == game_params[:winner].to_i }
+    @winning_team = @game.teams.find { |team| team.id == game_params[:winner].to_i }
   end
 
 
