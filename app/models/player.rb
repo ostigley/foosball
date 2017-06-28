@@ -22,6 +22,22 @@ class Player < ApplicationRecord
     end
   end
 
+  def games
+    teams.map(&:games).flatten
+  end
+
+  def winner
+    teams.map(&:winner).flatten
+  end
+
+  def loser
+    teams.map(&:loser).flatten
+  end
+
+  def team_name
+    name
+  end
+
   # Un comment and customise when you want to use data (image etc) from oauth provider
   # def self.new_with_session(params, session)
   #   super.tap do |user|

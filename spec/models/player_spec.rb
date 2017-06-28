@@ -4,6 +4,8 @@ require 'rails_helper'
 RSpec.describe Player, type: :model do
   let(:players) { create_list(:player, 3) }
   let(:teams) { create_list(:team, 2, :full_team) }
+  let(:game) { create(:game, teams: teams) }
+
   describe 'Player attributes' do
 
     it 'have name' do
@@ -24,4 +26,24 @@ RSpec.describe Player, type: :model do
       expect(teams.first.valid?).to be true
     end
   end
+
+  describe '#games' do
+
+    it 'returns the games the player has won' 
+  end
+
+  describe '#winner' do
+    it 'returns the Wins the player has won'
+  end
+
+  describe '#loser' do
+    it 'returns the Loses the player has lost'
+  end
+
+  describe '#team_name' do
+    it 'returns the name of the player' do
+      expect(players.first.team_name).to eq players.first.name
+    end
+  end
+
 end

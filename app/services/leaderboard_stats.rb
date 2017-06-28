@@ -1,28 +1,41 @@
 module LeaderboardStats
+  # Generate leaderboard data
   class Leaderboard
-    def initialize(teams = nil, games = nil, players = nil)
+    def initialize(teams = nil, players = nil)
       @teams = teams
-      @games = games
       @players = players
     end
 
     def team_leaderboard
+      sort_leaderboard(leaderboard_hash(@teams))
+    end
+
+    def player_leaderboard
+      sort_leaderboard(leaderboard_hash(@players))
+    end
+
+    private
+
+    def leaderboard_hash(model_array)
       leaderboard = []
-      @teams.map do |team|
-        played = team.games.count(&:winner)
-        won = team.winner.count
-        lost = team.loser.count
+      model_array.map do |record|
+        played = record.games.count(&:winner)
+        won = record.winner.count
+        lost = record.loser.count
 
         leaderboard << {
-          name: team.team_name,
+          name: record.team_name,
           played: played,
           won: won,
           lost: lost,
-          average: won > 0 ? (played / won)*100 : 0
+          average: won > 0 ? (won / played) * 100 : 0
         }
       end
+      leaderboard
+    end
 
-      leaderboard.sort! do |a,b|
+    def sort_leaderboard(leaderboard)
+      leaderboard.sort! do |a, b|
         if b[:won] == a[:won] && a[:played] != 0
           a[:played] <=> b[:played]
         elsif a[:played] != 0
@@ -31,10 +44,6 @@ module LeaderboardStats
           1
         end
       end
-    end
-
-    def player_leaderboard
-
     end
   end
 end
