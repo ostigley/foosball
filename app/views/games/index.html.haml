@@ -1,7 +1,8 @@
 .row
   .columns
-    .small-12.columns
+    .small-12.columns.text-center
       %h1 All The Games
       - @games.each do |game|
         %p
-          = game_name(game)
+          = link_to game_name(game), games_path(id: game.id)
+        %hr

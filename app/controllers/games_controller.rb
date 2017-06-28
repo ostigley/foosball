@@ -30,6 +30,10 @@ class GamesController < ApplicationController
     @games = Game.all
   end
 
+  def show
+    redirect_to(edit_games_path id: params[:id]) if @game.players.include?(current_player) && @game.winner.nil?
+  end
+
   def update
     if Results::Result.new(@game, @winning_team).set_winner
       redirect_to games_path id: @game.id

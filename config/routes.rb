@@ -24,5 +24,5 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_player_session
   end
 
-  root to: "games#index"
+  root to: 'leaderboards#index'
 end

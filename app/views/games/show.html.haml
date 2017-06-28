@@ -4,3 +4,8 @@
       %h1 This game...
       .text-center
         = game_name @game
+        - if @game.winner
+          %p
+            %span.winner
+              ="#{@game.winner.team.team_name} "
+            won
