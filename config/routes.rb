@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   # post 'games', to: 'games#create'
   # get 'games', to: 'games#index'
 
+  # Leadboards
+
+  get 'leaderboard', to: 'leaderboards#index'
+
   devise_for :players, :controllers => { :omniauth_callbacks => "players/omniauth_callbacks" }
 
   devise_scope :player do

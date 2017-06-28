@@ -6,7 +6,8 @@
         collection: @teams,
         as: :check_boxes,
         label_method: :team_name,
-        input_html: {class: 'team-option'}
+        input_html: {class: 'team-option'},
+        required: true
 
     = f.button :submit,
     id: 'submit-new-game'
