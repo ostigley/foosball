@@ -1,5 +1,5 @@
 .small-12.columns#new-game-form
-  = simple_form_for @game do |f|
+  = simple_form_for @game, authenticity_token: true do |f|
     = f.association :teams,
         label: 'Pick the matchup',
         include_hidden: false,

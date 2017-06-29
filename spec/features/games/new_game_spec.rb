@@ -39,8 +39,7 @@ RSpec.feature 'New game page', type: :feature do
         new_game_page.teams[2].click
         Capybara::Screenshot.screenshot_and_save_page
         new_game_page.submit.click
-
-        expect(page).to have_content 'It\'s on like donkey kong'
+        expect(page).to have_content 'This game...'
         expect(page.current_path).to match '/games?'
       end
     end
