@@ -16,4 +16,8 @@ class Team < ApplicationRecord
   def team_name
     "#{players.first.name} & #{players.second.name}"
   end
+
+  def image
+    players.map(&:image).map { |image| "<img src=#{image}>"}.join(' ')
+  end
 end

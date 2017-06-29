@@ -4,7 +4,8 @@
 .top-bar.navigation
   .top-bar-left
     %ul.dropdown.menu{"data-dropdown-menu" => ""}
-      %li.menu-text Boosball
+      %li.menu-text
+        = link_to 'Boosball', root_path
       %li
         = link_to 'New Team', teams_new_path
       %li

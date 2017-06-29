@@ -22,4 +22,10 @@ RSpec.describe Team, type: :model do
       expect(team.team_name).to eq "#{Player.first.name} & #{Player.second.name}"
     end
   end
+
+  describe '#image' do
+    it 'returns a string of image tags from each player' do
+      expect(team.image).to eq "<img src=#{team.players.first.image}> <img src=#{team.players.second.image}>"
+    end
+  end
 end
