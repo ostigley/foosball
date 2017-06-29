@@ -20,6 +20,9 @@ module LeaderboardStats
       leaderboard = []
       model_array.map do |record|
         played = record.games.count(&:winner)
+
+        next if played.zero?
+
         won = record.winner.count
         lost = record.loser.count
 
@@ -28,9 +31,10 @@ module LeaderboardStats
           played: played,
           won: won,
           lost: lost,
-          average: won > 0 ? (won / played) * 100 : 0
+          average: percentage(won, played)
         }
       end
+
       leaderboard
     end
 
@@ -44,6 +48,10 @@ module LeaderboardStats
           1
         end
       end
+    end
+
+    def percentage(a, b)
+      ((a.to_f / b.to_f) * 100).round(2)
     end
   end
 end
