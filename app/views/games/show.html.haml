@@ -2,10 +2,13 @@
   .columns
     .small-12
       %h1 This game...
-      .text-center
+      .text-center.game-show
         = game_name @game
         - if @game.winner
           %p
-            %span.winner
+            %span.game-show__winner
               ="#{@game.winner.team.team_name} "
             won
+            -# - unless @game.winner.confirmed?
+            -#   %span.game-show__unconfirmed
+            -#      = "(unconfirmed)"
