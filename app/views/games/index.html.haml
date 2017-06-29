@@ -5,4 +5,11 @@
       - @games.each do |game|
         %p
           = link_to game_name(game), games_path(id: game.id)
+        - if game.winner.nil?
+          %p Claim your victory
+
+        - elsif game.winner == current_player
+          %p You won
+        - else
+          %p You lost
         %hr

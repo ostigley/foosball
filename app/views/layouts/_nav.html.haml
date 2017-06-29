@@ -9,6 +9,8 @@
         = link_to 'New Team', teams_new_path
       %li
         = link_to 'New Game', games_new_path
+      %li
+        = link_to 'My Games', games_index_path
   .top-bar-right
     - if player_signed_in?
       %ul.menu

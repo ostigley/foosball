@@ -2,7 +2,7 @@
 class GamesController < ApplicationController
   include Results
 
-  before_action :require_login, only: [:new, :create, :edit, :update]
+  before_action :require_login, only: [:new, :create, :edit, :update, :index]
   before_action :find_game, only: [:show, :edit, :update]
   before_action :player_in_game, only: [:edit, :update]
   before_action :already_has_winner, only: [:edit, :update]
@@ -27,7 +27,7 @@ class GamesController < ApplicationController
   end
 
   def index
-    @games = Game.all
+    @games = current_player.games
   end
 
   def show

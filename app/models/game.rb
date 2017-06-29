@@ -14,6 +14,6 @@ class Game < ApplicationRecord
 
   def unique_players
     return if players.uniq.length == players.length
-    errors.add(:teams, 'must have a unique set of players. Fool')
+    errors.add(:teams, 'must have a unique set of players')
   end
 end
