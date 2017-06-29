@@ -39,15 +39,7 @@ module LeaderboardStats
     end
 
     def sort_leaderboard(leaderboard)
-      leaderboard.sort! do |a, b|
-        if b[:won] == a[:won] && a[:played] != 0
-          a[:played] <=> b[:played]
-        elsif a[:played] != 0
-          b[:won] <=> a[:won]
-        else
-          1
-        end
-      end
+      leaderboard.sort_by { |record| [record[:played], record[:won]] }.reverse
     end
 
     def percentage(a, b)
