@@ -19,7 +19,6 @@ Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
 end
 Capybara::Screenshot.prune_strategy = :keep_last_run
 Capybara.asset_host = 'http://localhost:3000'
-Capybara::Screenshot.autosave_on_failure = false
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, js_errors: false)
