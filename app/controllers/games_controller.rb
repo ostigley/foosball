@@ -2,9 +2,9 @@
 class GamesController < ApplicationController
   include Results
 
-  before_action :require_login, only: [:new, :create, :edit, :update, :index]
-  before_action :find_game, only: [:show, :edit, :update]
-  before_action :player_in_game, only: [:edit, :update]
+  before_action :require_login
+  before_action :find_game, only: [:show, :edit, :update, :destroy]
+  before_action :player_in_game, only: [:edit, :update, :destroy]
   before_action :already_has_winner, only: [:edit, :update]
   before_action :select_team, only: [:update]
 
@@ -40,6 +40,14 @@ class GamesController < ApplicationController
     else
       flash[:notice] = @game.errors
     end
+  end
+
+  def destroy
+    @game.winner.delete unless @game.winner.nil?
+    @game.loser.delete unless @game.loser.nil?
+    @game.delete
+    flash[:success] = "Game deleted"
+    redirect_to games_index_path
   end
 
   private
