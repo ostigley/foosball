@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Updating a game', type: :feature do
   let(:edit_game_page) { EditGame.new }
   let(:sign_in_page) { SignInPage.new }
+  let(:game_page) { GamePage.new }
 
   context 'for non-logged in players' do
     scenario 'redirects to sign in page' do
@@ -48,12 +49,23 @@ RSpec.feature 'Updating a game', type: :feature do
         expect(edit_game_page).to have_content(@game.teams.second.team_name)
       end
 
-      scenario 'lets the player set a winner' do
-        winner_button = edit_game_page.winner_radio_buttons.last
-        winner_button.click
-        edit_game_page.submit_button.click
+      context 'Winning player claims a win and' do
+        before do
+          winner_button = edit_game_page.winner_radio_buttons.last
+          winner_button.click
+          edit_game_page.submit_button.click
+        end
 
-        expect(page.current_path).to eq games_path
+        scenario 'lets the winning player claim a win' do
+          expect(page.status_code).to eq 200
+          expect(page.current_path).to eq games_path
+        end
+
+        scenario 'updating the game redirects to the game show page' do
+          expect(game_page.loaded?).to be true
+          expect(game_page).to have_game
+          expect(game_page).to have_game_winner
+        end
       end
 
       scenario 'lets the player confirm the winner'
