@@ -31,10 +31,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    game_has_winner = @game.winner.present?
-    win_unconfirmed = !@game.winner.try(:confirmed)
-
-    if (!game_has_winner && player_in_game?) || (game_has_winner && win_unconfirmed && player_is_loser?)
+    if (@game.has_no_winner? && player_in_game?) || (@game.has_winner? && @game.un_confirmed? && player_is_loser?)
       redirect_to(edit_games_path(id: params[:id]))
     end
   end
@@ -48,11 +45,10 @@ class GamesController < ApplicationController
   end
 
   def destroy
-    @game.winner.delete unless @game.winner.nil?
-    @game.loser.delete unless @game.loser.nil?
-    @game.delete
-    flash[:success] = "Game deleted"
-    redirect_to games_index_path
+    if @game.destroy
+      flash[:success] = 'Game deleted'
+      redirect_to games_index_path
+    end
   end
 
   private
@@ -66,10 +62,9 @@ class GamesController < ApplicationController
   end
 
   def game_completed
-    has_winner_and_player_is_winner = @game.winner.present? && !player_is_loser?
-    has_winner_and_confirmed = @game.winner && @game.winner.confirmed
+    has_winner_and_player_is_winner = @game.has_winner? && !player_is_loser?
 
-    return unless has_winner_and_player_is_winner || has_winner_and_confirmed
+    return unless has_winner_and_player_is_winner || @game.completed?
 
     flash[:notice] = 'That game already has a winner'
     redirect_to games_index_path
@@ -84,7 +79,7 @@ class GamesController < ApplicationController
   end
 
   def player_is_loser?
-    player_in_game? && @game.loser.present? && @game.loser.team.players.include?(current_player)
+    player_in_game? && @game.has_loser? && @game.losing_players.include?(current_player)
   end
 
   def select_team
