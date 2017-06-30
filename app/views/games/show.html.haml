@@ -9,6 +9,6 @@
             %span.game-show__winner
               ="#{@game.winner.team.team_name} "
             won
-            -# - unless @game.winner.confirmed?
-            -#   %span.game-show__unconfirmed
-            -#      = "(unconfirmed)"
+            - unless @game.winner.confirmed?
+              %span.game-show__unconfirmed
+                = "(unconfirmed)"

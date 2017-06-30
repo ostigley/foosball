@@ -4,7 +4,7 @@ class GamesController < ApplicationController
 
   before_action :require_login
   before_action :find_game, only: [:show, :edit, :update, :destroy]
-  before_action :player_in_game, only: [:edit, :update, :destroy]
+  before_action :redirect_if_player_not_in_game, only: [:edit, :update, :destroy]
   before_action :already_has_winner, only: [:edit, :update]
   before_action :select_team, only: [:update]
 
@@ -31,7 +31,12 @@ class GamesController < ApplicationController
   end
 
   def show
-    redirect_to(edit_games_path id: params[:id]) if @game.players.include?(current_player) && @game.winner.nil?
+    game_has_no_winner = @game.winner.nil?
+    win_unconfirmed = !@game.winner.try(:confirmed)
+
+    game_need_update = player_in_game? && (game_has_no_winner || win_unconfirmed)
+
+    redirect_to(edit_games_path(id: params[:id])) if game_need_update
   end
 
   def update
@@ -61,13 +66,17 @@ class GamesController < ApplicationController
   end
 
   def already_has_winner
-    return unless @game.winner
+    return unless @game.winner && @game.winner.confirmed
     flash[:notice] = 'That game already has a winner'
     redirect_to games_index_path
   end
 
-  def player_in_game
-    redirect_to games_index_path unless @game.players.include? current_player
+  def redirect_if_player_not_in_game
+    redirect_to games_index_path unless player_in_game?
+  end
+
+  def player_in_game?
+    @game.players.include? current_player
   end
 
   def select_team
