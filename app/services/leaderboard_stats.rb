@@ -19,7 +19,7 @@ module LeaderboardStats
     def leaderboard_hash(model_array)
       leaderboard = []
       model_array.map do |record|
-        played = record.games.count(&:winner)
+        played = record.games.count { |game| game.winner && game.winner.confirmed }
 
         next if played.zero?
 
