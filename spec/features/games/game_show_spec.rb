@@ -57,19 +57,18 @@ RSpec.feature 'Viewing a game', type: :feature do
   end
 
   context 'that I lost but have not confirmed' do
-    before do
-    end
 
     scenario 'redirects me to the game edit page' do
       game.create_winner(team: game.teams.first)
+      game.create_loser(team: game.teams.second)
+
       signed_in_player = game.teams.second.players.first
+
       set_omniauth(signed_in_player)
 
       sign_in_page.load
       sign_in_page.github.click
-
       game_page.load(id: game.id)
-
       expect(edit_game_page.loaded?).to eq true
     end
   end

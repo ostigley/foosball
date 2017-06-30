@@ -5,19 +5,19 @@ RSpec.feature 'Updating a game', type: :feature do
   let(:sign_in_page) { SignInPage.new }
   let(:game_page) { GamePage.new }
 
-  context 'for non-logged in players' do
-    scenario 'redirects to sign in page' do
+  context 'when I\' not logged in' do
+    scenario 'redirects me to the sign in page' do
       edit_game_page.load(id: 1)
       expect(current_path).to eq new_player_session_path
     end
   end
 
-  context 'for logged in players' do
+  context 'when I\m logged in' do
     before do
       @game = create(:game)
     end
-    context 'for players that did not play' do
-      scenario 'redirects to the games index page' do
+    context 'but did not participate in the game' do
+      scenario 'redirects me to the games index page' do
         signed_in_player = create(:player)
         set_omniauth(signed_in_player)
 
@@ -29,11 +29,11 @@ RSpec.feature 'Updating a game', type: :feature do
       end
     end
 
-    context 'for players that did play in the game' do
+    context 'and participted in the game' do
       before do
         # Make the signed in player part of the team
-        signed_in_player = @game.players.first
-        set_omniauth(signed_in_player)
+        @signed_in_player = @game.players.first
+        set_omniauth(@signed_in_player)
 
         sign_in_page.load
         sign_in_page.github.click
@@ -49,19 +49,19 @@ RSpec.feature 'Updating a game', type: :feature do
         expect(edit_game_page).to have_content(@game.teams.second.team_name)
       end
 
-      context 'Winning player claims a win and' do
+      context 'and claim a win' do
         before do
-          winner_button = edit_game_page.winner_radio_buttons.last
-          winner_button.click
+          my_team_label = find(:css, "input#game_winner_#{@game.teams.first.id}")
+          my_team_label.set true
           edit_game_page.submit_button.click
         end
 
-        scenario 'the page responds with 200 and redirects to game show' do
+        scenario 'redirects me to the games path with 200 status code' do
           expect(page.status_code).to eq 200
           expect(page.current_path).to eq games_path
         end
 
-        scenario 'redirects to the game show page' do
+        scenario 'renders the game container and shows a winner' do
           expect(game_page.loaded?).to be true
           expect(game_page).to have_game
           expect(game_page).to have_game_winner
@@ -75,6 +75,8 @@ RSpec.feature 'Updating a game', type: :feature do
     context 'for games that already have a winner' do
       before do
         @game.create_winner(team: @game.teams.first)
+        @game.create_loser(team: @game.teams.second)
+
         signed_in_player = @game.players.first
         set_omniauth(signed_in_player)
 
@@ -82,6 +84,7 @@ RSpec.feature 'Updating a game', type: :feature do
         sign_in_page.github.click
         edit_game_page.load(id: @game.id)
       end
+
       scenario 'redirects to game index if a game already has a winner' do
         expect(page.current_path).to eq games_index_path
       end

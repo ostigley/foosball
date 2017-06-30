@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   before_action :require_login
   before_action :find_game, only: [:show, :edit, :update, :destroy]
   before_action :redirect_if_player_not_in_game, only: [:edit, :update, :destroy]
-  before_action :already_has_winner, only: [:edit, :update]
+  before_action :game_completed, only: [:edit, :update]
   before_action :select_team, only: [:update]
 
   def new
@@ -31,12 +31,12 @@ class GamesController < ApplicationController
   end
 
   def show
-    game_has_no_winner = @game.winner.nil?
+    game_has_winner = @game.winner.present?
     win_unconfirmed = !@game.winner.try(:confirmed)
 
-    game_need_update = player_in_game? && (game_has_no_winner || win_unconfirmed)
-
-    redirect_to(edit_games_path(id: params[:id])) if game_need_update
+    if (!game_has_winner && player_in_game?) || (game_has_winner && win_unconfirmed && player_is_loser?)
+      redirect_to(edit_games_path(id: params[:id]))
+    end
   end
 
   def update
@@ -65,8 +65,12 @@ class GamesController < ApplicationController
     @game ||= Game.find_by_id(params[:id])
   end
 
-  def already_has_winner
-    return unless @game.winner && @game.winner.confirmed
+  def game_completed
+    has_winner_and_player_is_winner = @game.winner.present? && !player_is_loser?
+    has_winner_and_confirmed = @game.winner && @game.winner.confirmed
+
+    return unless has_winner_and_player_is_winner || has_winner_and_confirmed
+
     flash[:notice] = 'That game already has a winner'
     redirect_to games_index_path
   end
@@ -79,9 +83,11 @@ class GamesController < ApplicationController
     @game.players.include? current_player
   end
 
+  def player_is_loser?
+    player_in_game? && @game.loser.present? && @game.loser.team.players.include?(current_player)
+  end
+
   def select_team
     @winning_team = @game.teams.find { |team| team.id == game_params[:winner].to_i }
   end
-
-
 end
