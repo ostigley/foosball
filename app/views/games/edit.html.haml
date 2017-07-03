@@ -2,4 +2,7 @@
   .columns
     .small-12.columns
       %h1 Who won this game?
-      = render 'edit_game_form'
+      - if @game.un_confirmed?
+        %p Game needs confirming by loser
+      - else
+        = render 'edit_game_form'

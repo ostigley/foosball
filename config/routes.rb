@@ -14,8 +14,11 @@ Rails.application.routes.draw do
   # get 'games', to: 'games#index'
 
   # Leadboards
-
   get 'leaderboard', to: 'leaderboards#index'
+
+  # Winners
+  get 'winners/edit', to: 'winners#edit'
+  patch 'winners', to: 'winners#update'
 
   devise_for :players, :controllers => { :omniauth_callbacks => "players/omniauth_callbacks" }
 

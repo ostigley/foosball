@@ -1,0 +1,4 @@
+.edit-winner-form.small-12.columns
+  = simple_form_for @winner, url: winners_path(id: @winner.id) do |f|
+    = f.input :confirmed, as: :radio_buttons, include_hidden: false, label: "Did #{@winner.team.team_name} win this game?"
+    = f.submit id: 'submit'
