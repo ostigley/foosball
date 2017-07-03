@@ -1,0 +1,71 @@
+require 'rails_helper'
+
+RSpec.feature 'Updating a game winner', type: :feature do
+  let(:edit_winner_page) { WinnerEdit.new }
+  let(:sign_in_page) { SignInPage.new }
+
+  before do
+    @game = create(:game)
+  end
+
+  context 'if I am part of the winning team' do
+    before do
+      signed_in_player = @game.players.first
+      set_omniauth(signed_in_player)
+
+      @game.create_winner(team: @game.teams.first)
+      @game.create_loser(team: @game.teams.second)
+
+
+      sign_in_page.load
+      sign_in_page.github.click
+      edit_winner_page.load(id: @game.winner.id)
+    end
+
+    scenario 'redirects to game index page' do
+      expect(page.current_path).to eq root_path
+    end
+
+    scenario 'shows a flash message' do
+      expect(page).to have_content 'Only a loser can confirm the game winner'
+    end
+  end
+
+  context 'if I am part of the losing team' do
+    before do
+      signed_in_player = @game.players.first
+      set_omniauth(signed_in_player)
+
+      @game.create_winner(team: @game.teams.second)
+      @game.create_loser(team: @game.teams.first)
+
+      sign_in_page.load
+      sign_in_page.github.click
+      edit_winner_page.load(id: @game.winner.id)
+    end
+
+    scenario 'renders the edit_winner form' do
+      expect(edit_winner_page).to have_winner_form
+    end
+
+    context 'and I click "yes" to confirm my loss' do
+      before do
+        edit_winner_page.yes_button.click
+        edit_winner_page.submit_button.click
+        @game.reload
+      end
+
+      scenario 'updates the winner confirmation' do
+        expect(@game.winner.confirmed).to eq true
+      end
+
+      scenario 'redirects me to the root path' do
+        expect(page.current_path).to eq root_path
+      end
+
+      scenario 'shows a flash message confirming my loss' do
+        expect(page).to have_content "The leader board has been updated with your loss"
+      end
+    end
+  end
+end

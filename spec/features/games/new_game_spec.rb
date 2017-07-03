@@ -34,7 +34,7 @@ RSpec.feature 'New game page', type: :feature do
     end
 
     context 'createing a new team' do
-      scenario 'renders the teams index page' do
+      scenario 'renders the root path' do
         new_game_page.teams[1].click
         new_game_page.teams[2].click
         new_game_page.submit.click

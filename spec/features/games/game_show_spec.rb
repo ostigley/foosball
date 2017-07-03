@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Viewing a game', type: :feature do
   let(:edit_game_page) { EditGame.new }
+  let(:wiiners_edit_page) { WinnerEdit.new }
   let(:sign_in_page) { SignInPage.new }
   let(:game_page) { GamePage.new }
   let(:game) { create(:game) }
@@ -58,7 +59,7 @@ RSpec.feature 'Viewing a game', type: :feature do
 
   context 'that I lost but have not confirmed' do
 
-    scenario 'redirects me to the game edit page' do
+    scenario 'redirects me to the winners edit page' do
       game.create_winner(team: game.teams.first)
       game.create_loser(team: game.teams.second)
 
@@ -69,7 +70,7 @@ RSpec.feature 'Viewing a game', type: :feature do
       sign_in_page.load
       sign_in_page.github.click
       game_page.load(id: game.id)
-      expect(edit_game_page.loaded?).to eq true
+      expect(wiiners_edit_page.loaded?).to eq true
     end
   end
 end
