@@ -36,8 +36,12 @@ class GamesController < ApplicationController
     end
   end
 
+  def edit
+    redirect_to winners_edit_path({ id: @game.winner.id }) if @game.un_confirmed?
+  end
+
   def update
-    if Results::Result.new(@game, @winning_team).set_winner
+    if Results::Result.new(@game).set_winner(@winning_team)
       redirect_to games_path id: @game.id
     else
       flash[:notice] = @game.errors
@@ -57,10 +61,6 @@ class GamesController < ApplicationController
     params.require(:game).permit(:id, :team_id, :winner, :team_ids => [])
   end
 
-  def find_game
-    @game ||= Game.find_by_id(params[:id])
-  end
-
   def game_completed
     has_winner_and_player_is_winner = @game.has_winner? && !player_is_loser?
 
@@ -72,14 +72,6 @@ class GamesController < ApplicationController
 
   def redirect_if_player_not_in_game
     redirect_to games_index_path unless player_in_game?
-  end
-
-  def player_in_game?
-    @game.players.include? current_player
-  end
-
-  def player_is_loser?
-    player_in_game? && @game.has_loser? && @game.losing_players.include?(current_player)
   end
 
   def select_team

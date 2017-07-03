@@ -12,4 +12,16 @@ class ApplicationController < ActionController::Base
   def team_has_current_player?(team)
     team.players.include? current_player
   end
+
+  def player_is_loser?
+    player_in_game? && @game.has_loser? && @game.losing_players.include?(current_player)
+  end
+
+  def find_game
+    @game ||= Game.find_by_id(params[:id])
+  end
+
+  def player_in_game?
+    @game.players.include? current_player
+  end
 end
