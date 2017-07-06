@@ -42,6 +42,7 @@ class GamesController < ApplicationController
 
   def update
     if Results::Result.new(@game).set_winner(@winning_team)
+      WinnerMailer.email_losers(@game).deliver_now
       redirect_to games_path id: @game.id
     else
       flash[:notice] = @game.errors

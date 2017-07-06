@@ -13,14 +13,19 @@ class WinnersController < ApplicationController
     confirmation = winner_params[:confirmed]
     if Results::Result.new(@game).confirm_winner(@winner, confirmation)
       redirect_to root_path
-      flash[:notice] = "The leader board has been updated with your loss"
+      flash[:notice] = 'The leader board has been updated with your loss'
     end
+  end
+
+  def confirmation_token
+    binding.pry
+    # find winner by token.  winner. confirned = true.
   end
 
   private
 
   def winner_params
-    params.require(:winner).permit(:confirmed)
+    params.require(:winner).permit(:confirmed, :token)
   end
 
   def find_winner

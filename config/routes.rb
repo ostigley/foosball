@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # Winners
   get 'winners/edit', to: 'winners#edit'
   patch 'winners', to: 'winners#update'
+  get 'winners/confirmation', to: 'winners#confirmation_token'
 
   devise_for :players, :controllers => { :omniauth_callbacks => "players/omniauth_callbacks" }
 
