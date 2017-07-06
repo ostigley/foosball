@@ -33,11 +33,16 @@ RSpec.describe Game, type: :model do
   end
 
   describe 'Assigning a winner' do
-    it 'saves a new winner' do
+    before do
       full_game.create_winner(team: full_game.teams.first)
-
+    end
+    it 'saves a new winner' do
       expect(full_game.valid?).to be true
       expect(Winner.all.count).to eq 1
+    end
+
+    it 'assigns a winning token' do
+      expect(full_game.winner.token).to_not eq nil
     end
   end
 
