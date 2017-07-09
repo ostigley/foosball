@@ -1,7 +1,7 @@
 # Winners controller
 class WinnersController < ApplicationController
   include Results
-  before_action :require_login
+  before_action :require_login, only: [:edit, :update]
   before_action :find_winner, only: [:edit, :update]
   before_action :find_winning_game, only: [:edit, :update]
   before_action :game_needs_update, only: [:edit, :update]
@@ -18,8 +18,14 @@ class WinnersController < ApplicationController
   end
 
   def confirmation_token
-    binding.pry
-    # find winner by token.  winner. confirned = true.
+    @winner = Winner.find_by_token(winner_params[:token])
+
+    if @winner && @winner.try(:confirm)
+      flash[:success] = 'Thanks for confirming.  The leaderboard has been updated'
+    else
+      flash[:alert] = 'I couldn\'t find that game sorry.'
+    end
+    redirect_to root_path
   end
 
   private

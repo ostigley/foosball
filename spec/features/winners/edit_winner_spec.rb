@@ -68,4 +68,21 @@ RSpec.feature 'Updating a game winner', type: :feature do
       end
     end
   end
+
+  context 'by email token link' do
+    before do
+      @game.create_winner(team: @game.teams.second)
+      visit "#{root_url}winners/confirmation?winner[token]=#{@game.winner.token}"
+    end
+
+    scenario 'confirms the win on the winner instance' do
+      @game.reload
+      expect(@game.winner.confirmed).to eq true
+    end
+
+    scenario 'renders the leaderboard' do
+      expect(page.current_path).to eq root_path
+      expect(page).to have_content 'Thanks for confirming.  The leaderboard has been updated'
+    end
+  end
 end
