@@ -3,9 +3,8 @@
 
 %p Is this true?
 
-= link_to 'Click here to let them have their victory points', "#{root_url}winners/confirmation?token=#{@game.winner.token}"
-
-%p The leaderboard won't be updated until do.
+= link_to 'Click here to let them have their victory points', "#{root_url}winners/confirmation?winner[token]=#{@game.winner.token}"
+%p The leaderboard won't be updated until one of you does.
 
 %p Better luck next time.
 
