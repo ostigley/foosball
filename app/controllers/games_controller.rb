@@ -43,6 +43,7 @@ class GamesController < ApplicationController
   def update
     if Results::Result.new(@game).set_winner(@winning_team)
       WinnerMailer.email_losers(@game).deliver_now
+      flash[:notice] = 'Your game won\'t show on the leaderboard until the losers confirm this result' unless player_is_loser?
       redirect_to games_path id: @game.id
     else
       flash[:notice] = @game.errors

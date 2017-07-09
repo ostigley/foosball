@@ -62,6 +62,7 @@ RSpec.feature 'Updating a game', type: :feature do
         scenario 'redirects me to the games path with 200 status code' do
           expect(page.status_code).to eq 200
           expect(page.current_path).to eq games_path
+          expect(page).to have_content 'Your game won\'t show on the leaderboard until the losers confirm this result'
         end
 
         scenario 'renders the game container and shows a winner' do

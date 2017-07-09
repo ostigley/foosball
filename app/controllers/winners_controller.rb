@@ -40,7 +40,6 @@ class WinnersController < ApplicationController
 
   def game_needs_update
     redirect_to root_path unless (!@winner.confirmed? && player_is_loser?)
-    flash[:notice] = 'Only a loser can confirm the game winner'
   end
 
   def find_winning_game
