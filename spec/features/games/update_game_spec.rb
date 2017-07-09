@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Updating a game', type: :feature do
   let(:edit_game_page) { EditGame.new }
+  let(:edit_winner_page) { WinnerEdit.new }
   let(:sign_in_page) { SignInPage.new }
   let(:game_page) { GamePage.new }
 
@@ -51,9 +52,11 @@ RSpec.feature 'Updating a game', type: :feature do
 
       context 'and claim a win' do
         before do
+
           my_team_label = find(:css, "input#game_winner_#{@game.teams.first.id}")
           my_team_label.set true
-          edit_game_page.submit_button.click
+
+          expect { edit_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
         end
 
         scenario 'redirects me to the games path with 200 status code' do
@@ -66,7 +69,25 @@ RSpec.feature 'Updating a game', type: :feature do
           expect(game_page).to have_game
           expect(game_page).to have_game_winner
         end
+      end
 
+      context 'and claim a loss' do
+        before do
+
+          winning_team_label = find(:css, "input#game_winner_#{@game.teams.second.id}")
+          winning_team_label.set true
+
+          expect { edit_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
+        end
+
+        scenario 'redirects me to the games path with 200 status code' do
+          expect(page.status_code).to eq 200
+          expect(page.current_path).to eq winners_edit_path
+        end
+
+        scenario 'renders the winner confirmation form' do
+          expect(edit_winner_page.loaded?).to be true
+        end
       end
 
       scenario 'lets the player confirm the winner'
