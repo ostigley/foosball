@@ -39,7 +39,7 @@ module LeaderboardStats
     end
 
     def sort_leaderboard(leaderboard)
-      leaderboard.sort_by { |record| [record[:played], record[:won]] }.reverse
+      leaderboard.sort_by { |record| record[:won] }.reverse
     end
 
     def percentage(a, b)
