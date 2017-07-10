@@ -11,3 +11,17 @@
 
     = f.button :submit,
     id: 'submit-new-game'
+
+
+
+
+
+
+
+.small-12.columns#new-game-form
+  = form_tag("/games", method: "post") do
+    = label_tag(:teams, "Me and")
+    = select_tag('game[team_ids][]', options_for_select(@my_teams))
+    = label_tag(:teams, "beat")
+    = select_tag('game[team_ids][]', options_for_select(@other_teams))
+    = submit_tag("You're goddam right.")

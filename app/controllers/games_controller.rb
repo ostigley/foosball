@@ -11,9 +11,15 @@ class GamesController < ApplicationController
   def new
     @game = Game.new
     @teams = Team.all
+    @my_teams = current_player.teams.map do |team|
+      other_player = team.players.find { |player| player != current_player }
+      [ other_player.name, team.id, {'data-player-id': other_player.id} ]
+    end
+    @other_teams = Team.exclude_player_teams(current_player.teams).map { |team| [team.team_name, team.id, {'data-player-ids': team.player_ids.to_s}] }
   end
 
   def create
+    binding.pry
     team_ids = game_params[:team_ids]
     @game = Game.new(team_ids: team_ids)
 
