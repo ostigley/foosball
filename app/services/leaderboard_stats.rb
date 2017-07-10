@@ -23,8 +23,8 @@ module LeaderboardStats
 
         next if played.zero?
 
-        won = record.winner.count
-        lost = record.loser.count
+        won = record.winner.count(&:confirmed?)
+        lost = record.loser.count(&:confirmed?)
 
         leaderboard << {
           name: record.team_name,
