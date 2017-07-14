@@ -1,27 +1,7 @@
 .small-12.columns#new-game-form
-  = simple_form_for @game, authenticity_token: true do |f|
-    = f.association :teams,
-        label: 'Pick the matchup',
-        include_hidden: false,
-        collection: @teams,
-        as: :check_boxes,
-        label_method: :team_name,
-        input_html: {class: 'team-option'},
-        required: true
-
-    = f.button :submit,
-    id: 'submit-new-game'
-
-
-
-
-
-
-
-.small-12.columns#new-game-form
   = form_tag("/games", method: "post") do
     = label_tag(:teams, "Me and")
-    = select_tag('game[team_ids][]', options_for_select(@my_teams))
+    = select_tag('game[team_ids][]', options_for_select(@my_teams), {class: 'my-team', prompt: 'choose team-mate'})
     = label_tag(:teams, "beat")
-    = select_tag('game[team_ids][]', options_for_select(@other_teams))
-    = submit_tag("You're goddam right.")
+    = select_tag('game[team_ids][]', options_for_select(@other_teams), {class: 'other-team', prompt: 'choose losing team'})
+    = submit_tag("Yeah we did", id: 'submit-new-game')
