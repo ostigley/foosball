@@ -4,10 +4,9 @@ module Results
       @game = game
     end
 
-    def set_winner(winner)
-      loser = @game.teams.find {|team| team != winner }
-      @game.create_winner(team: winner)
-      @game.create_loser(team: loser)
+    def set_winner(winner_id, loser_id)
+      @game.create_winner(team_id: winner_id)
+      @game.create_loser(team_id: loser_id)
       @game.save!
     end
 

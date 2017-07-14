@@ -9,8 +9,8 @@ class GamesController < ApplicationController
   before_action :select_team, only: [:update]
 
   def new
+    flash[:success] = Faker::ChuckNorris.fact
     @game = Game.new
-    @teams = Team.all
     @my_teams = current_player.teams.map do |team|
       other_player = team.players.find { |player| player != current_player }
       [ other_player.name, team.id, {'data-player-id': other_player.id} ]
@@ -19,13 +19,13 @@ class GamesController < ApplicationController
   end
 
   def create
-    binding.pry
     team_ids = game_params[:team_ids]
     @game = Game.new(team_ids: team_ids)
 
-    if @game.save
-      flash[:success] = Faker::ChuckNorris.fact
-      redirect_to games_path id: @game.id
+    if @game.save && Results::Result.new(@game).set_winner(team_ids.first, team_ids.second)
+      WinnerMailer.email_losers(@game).deliver_now
+      flash[:notice] = 'Your game won\'t show on the leaderboard until the losers confirm this result' unless player_is_loser?
+      redirect_to root_path
     else
       flash[:alert] = @game.errors.full_messages.to_sentence
       redirect_to games_new_path
@@ -44,16 +44,6 @@ class GamesController < ApplicationController
 
   def edit
     redirect_to winners_edit_path({ id: @game.winner.id }) if @game.un_confirmed?
-  end
-
-  def update
-    if Results::Result.new(@game).set_winner(@winning_team)
-      WinnerMailer.email_losers(@game).deliver_now
-      flash[:notice] = 'Your game won\'t show on the leaderboard until the losers confirm this result' unless player_is_loser?
-      redirect_to games_path id: @game.id
-    else
-      flash[:notice] = @game.errors
-    end
   end
 
   def destroy
