@@ -50,7 +50,7 @@ RSpec.feature 'New game page', type: :feature, js: true do
         before do
           new_game_page.my_team_select.select(Player.first.name)
           new_game_page.other_team_select.select(Team.second.team_name)
-          new_game_page.submit.click
+          expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
         end
 
         scenario 'renders the root path' do
