@@ -1,7 +1,7 @@
-.small-12.columns#new-game-form
+.small-12.columns#new-game-form.new-game-form
   = form_tag("/games", method: "post") do
     = label_tag(:teams, "Me and")
-    = select_tag('game[team_ids][]', options_for_select(my_team_options), {class: 'my-team', prompt: 'choose team-mate', required: true})
+    = select_tag('game[team_ids][]', options_for_select(my_team_options), {class: 'my-team small-12 medium-2', prompt: 'choose team-mate', required: true})
     = label_tag(:teams, "beat")
-    = select_tag('game[team_ids][]', options_for_select(other_team_options), {class: 'other-team', prompt: 'choose losing team', required: true})
+    = select_tag('game[team_ids][]', options_for_select(other_team_options), {class: 'other-team small-12 medium-3', prompt: 'choose losing team', required: true})
     = submit_tag("Yeah we did", id: 'submit-new-game')
