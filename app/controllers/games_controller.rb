@@ -9,14 +9,12 @@ class GamesController < ApplicationController
   before_action :select_team, only: [:update]
 
   def new
-    flash[:success] = Faker::ChuckNorris.fact
     @game = Game.new
     @my_teams = current_player.teams
-    @other_teams = Team.exclude_player_teams(current_player.teams)
   end
 
   def create
-    team_ids = game_params[:team_ids]
+    team_ids = fetch_team_ids
     @game = Game.new(team_ids: team_ids)
 
     if @game.save && Results::Result.new(@game).set_winner(team_ids.first, team_ids.second)
@@ -51,6 +49,12 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def fetch_team_ids
+    team1 = game_params[:team_ids].first
+    team2 = Team.by_player_ids(game_params['team_ids'].last(2)).first.id
+    [team1, team2]
+  end
 
   def game_params
     params.require(:game).permit(:id, :team_id, :winner, :team_ids => [])

@@ -7,7 +7,7 @@ module GamesHelper
     end
   end
 
-  def other_team_options
-    @other_teams.map { |team| [team.team_name, team.id, {'data-player-ids': team.player_ids.to_s}] }
+  def other_player_options
+    @other_players.map { |player| [player.name, player.id] }
   end
 end

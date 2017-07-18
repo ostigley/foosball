@@ -37,9 +37,19 @@ class TeamsController < ApplicationController
     render json: available_players.flatten.uniq, status: 200
   end
 
+
   private
 
   def team_params
     params.require(:team).permit(:player_ids, :id)
+  end
+
+  def team_players(team)
+    team.players.map do |player|
+      {
+        id: player.id,
+        team: team.id
+      }
+    end
   end
 end

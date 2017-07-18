@@ -9,8 +9,17 @@ class Team < ApplicationRecord
   validates :players, length: { is: 2,
                                 message: 'A team needs exactly two players' }
 
-  scope :exclude_player_teams, ->(signed_in_player_teams) {
-    all - signed_in_player_teams
+  scope :exclude_player_teams, ->(signed_in_player_teams, teams = Team.all) {
+    teams - signed_in_player_teams
+  }
+
+  scope :by_player_ids, ->(ids) { joins(:players).where(players: { id: ids }).group(:id).having('count(1) = ?', ids.count) }
+
+  scope :team_options, ->(team_id) {
+    team = find_by_id(team_id)
+    players = team.players
+
+    Team.exclude_player_teams([players.first.teams, players.second.teams].flatten)
   }
 
   def team_name
