@@ -9,10 +9,8 @@ class GamesController < ApplicationController
   before_action :select_team, only: [:update]
 
   def new
-    flash[:success] = Faker::ChuckNorris.fact
     @game = Game.new
     @my_teams = current_player.teams
-    @other_teams = Team.exclude_player_teams(current_player.teams)
   end
 
   def create

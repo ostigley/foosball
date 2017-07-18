@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'teams/new', to: 'teams#new'
   post 'teams', to: 'teams#create'
   get 'teams', to: 'teams#index'
+  get 'teams/options', to: 'teams#team_options'
+  get 'teams/player_options', to: 'teams#team_player_options'
 
   # Games
   resource :games
