@@ -3,6 +3,9 @@ class Player < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   has_and_belongs_to_many :teams
+  has_many :games, through: :teams
+  has_many :winner, through: :teams
+  has_many :loser, through: :teams
 
   devise :registerable, :rememberable
   devise :omniauthable, omniauth_providers: [:github]
@@ -22,17 +25,17 @@ class Player < ApplicationRecord
     end
   end
 
-  def games
-    teams.map(&:games).flatten
-  end
+  # def games
+  #   teams.map(&:games).flatten
+  # end
 
-  def winner
-    teams.map(&:winner).flatten
-  end
+  # def winner
+  #   teams.map(&:winner).flatten
+  # end
 
-  def loser
-    teams.map(&:loser).flatten
-  end
+  # def loser
+  #   teams.map(&:loser).flatten
+  # end
 
   def team_name
     name
