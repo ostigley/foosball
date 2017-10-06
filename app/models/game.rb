@@ -24,20 +24,16 @@ class Game < ApplicationRecord
     teams.map(&:players).flatten
   end
 
-  def winning_players
-    winner.team.players
-  end
+  [:loser, :winner].each do |relationship|
+    # game.winner.team.players && game.loser.team.players
+    define_method("#{relationship}_players".to_sym) do
+      send(relationship).team.players
+    end
 
-  def winning_team_name
-    winner.team.team_name
-  end
-
-  def losing_team_name
-    loser.team.team_name
-  end
-
-  def losing_players
-    loser.team.players
+    # game.winner.team.team_name && game.loser.team.team_name
+    define_method("#{relationship}_team_name".to_sym) do
+      send(relationship).team.team_name
+    end
   end
 
   def has_no_winner?

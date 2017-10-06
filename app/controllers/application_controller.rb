@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def player_is_loser?
-    player_in_game? && @game.has_loser? && @game.losing_players.include?(current_player)
+    player_in_game? && @game.has_loser? && @game.loser_players.include?(current_player)
   end
 
   def find_game
