@@ -21,7 +21,8 @@ class WinnersController < ApplicationController
     @winner = Winner.find_by_token(winner_params[:token])
 
     if @winner && @winner.try(:confirm)
-      flash[:success] = 'Thanks for confirming.  The leaderboard has been updated'
+      ConfirmedResultMailer.email_winners(@winner.game).deliver_now
+      flash[:success] = 'Thanks for confirming.  The leaderboard has been updated.'
     else
       flash[:alert] = 'I couldn\'t find that game sorry.'
     end
