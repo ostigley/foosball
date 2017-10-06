@@ -25,36 +25,25 @@ class Game < ApplicationRecord
   end
 
   [:loser, :winner].each do |relationship|
-    # game.winner.team.players && game.loser.team.players
+    # loser_players && winner_players
     define_method("#{relationship}_players".to_sym) do
       send(relationship).team.players
     end
 
-    # game.winner.team.team_name && game.loser.team.team_name
+    # loser_team_name && winner_team_name
     define_method("#{relationship}_team_name".to_sym) do
       send(relationship).team.team_name
     end
 
-    # game.winner.team.team_name && game.loser.team.team_name
+    # has_no_winner? && has_no_loser?
     define_method("has_no_#{relationship}?".to_sym) do
       send(relationship).nil?
     end
-  end
 
-  # def has_no_winner?
-  #   winner.nil?
-  # end
-
-  # def has_no_loser?
-  #   loser.nil?
-  # end
-
-  def has_winner?
-    winner.present?
-  end
-
-  def has_loser?
-    loser.present?
+    # has_winner? && has_loser?
+    define_method("has_#{relationship}?".to_sym) do
+      send(relationship).present?
+    end
   end
 
   def completed?
