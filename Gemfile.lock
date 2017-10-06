@@ -188,6 +188,8 @@ GEM
     public_suffix (2.0.5)
     puma (3.9.1)
     rack (2.0.3)
+    rack-mini-profiler (0.10.4)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.1)
@@ -319,6 +321,7 @@ DEPENDENCIES
   poltergeist
   pry
   puma (~> 3.7)
+  rack-mini-profiler
   rails (~> 5.1.1)
   rspec-rails
   sass-rails (~> 5.0)
@@ -335,4 +338,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.1
+   1.16.0.pre.2
