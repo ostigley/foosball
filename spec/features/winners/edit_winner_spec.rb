@@ -71,7 +71,10 @@ RSpec.feature 'Updating a game winner', type: :feature do
 
   context 'by email token link' do
     before do
+      @email_count = ActionMailer::Base.deliveries.count
       @game.create_winner(team: @game.teams.second)
+      @game.create_loser(team: @game.teams.first)
+      # expect(ConfirmedResultMailer).to receive(:email_winners).with(@game)
       visit "#{root_url}winners/confirmation?winner[token]=#{@game.winner.token}"
     end
 
@@ -83,6 +86,10 @@ RSpec.feature 'Updating a game winner', type: :feature do
     scenario 'renders the leaderboard' do
       expect(page.current_path).to eq root_path
       expect(page).to have_content 'Thanks for confirming.  The leaderboard has been updated'
+    end
+
+    scenario 'sends an email to the losers' do
+      expect(ActionMailer::Base.deliveries.count).to eq @email_count + 1
     end
   end
 end
