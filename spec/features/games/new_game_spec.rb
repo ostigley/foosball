@@ -63,8 +63,8 @@ RSpec.feature 'New game page', type: :feature, js: true do
         end
 
         scenario 'sets a game winner to my team' do
-          winning_players = Game.first.winning_players
-          expect(winning_players.include?(signed_in_player)).to eq true
+          winner_players = Game.first.winner_players
+          expect(winner_players.include?(signed_in_player)).to eq true
         end
       end
     end

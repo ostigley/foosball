@@ -8,7 +8,7 @@
         - if game.has_no_winner?
           %p Claim your victory
 
-        - elsif game.winning_players.include?(current_player)
+        - elsif game.winner_players.include?(current_player)
           %p You won
         - else
           %p You lost
