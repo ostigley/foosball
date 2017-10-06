@@ -32,6 +32,10 @@ class Game < ApplicationRecord
     winner.team.team_name
   end
 
+  def losing_team_name
+    loser.team.team_name
+  end
+
   def losing_players
     loser.team.players
   end
