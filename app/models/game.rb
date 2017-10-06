@@ -34,15 +34,20 @@ class Game < ApplicationRecord
     define_method("#{relationship}_team_name".to_sym) do
       send(relationship).team.team_name
     end
+
+    # game.winner.team.team_name && game.loser.team.team_name
+    define_method("has_no_#{relationship}?".to_sym) do
+      send(relationship).nil?
+    end
   end
 
-  def has_no_winner?
-    winner.nil?
-  end
+  # def has_no_winner?
+  #   winner.nil?
+  # end
 
-  def has_no_loser?
-    loser.nil?
-  end
+  # def has_no_loser?
+  #   loser.nil?
+  # end
 
   def has_winner?
     winner.present?
