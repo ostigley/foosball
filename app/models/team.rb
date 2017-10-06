@@ -18,6 +18,6 @@ class Team < ApplicationRecord
   end
 
   def image
-    players.map(&:image).map { |image| "<img src=#{image}>"}.join(' ')
+    players.map(&:image).map { |image| "<img src=#{image}>" }.join(' ')
   end
 end
