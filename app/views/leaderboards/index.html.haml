@@ -13,6 +13,7 @@
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
           %th{:width => "150"} Average
+          %th{:width => "150"} ELO Rating
       %tbody
         - @players.each do |player|
           %tr
@@ -26,6 +27,8 @@
               = player[:lost]
             %td.leaderboard-table__games-average
               = "#{player[:average]}%"
+            %td.leaderboard-table__games-average
+              = "#{player[:elo]}"
 
 .row
   .columns
@@ -38,6 +41,7 @@
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
           %th{:width => "150"} Average
+          %th{:width => "150"} ELO Rating
       %tbody
         - @teams.each do |team|
           %tr
@@ -51,3 +55,5 @@
               = team[:lost]
             %td.leaderboard-table__games-average
               = "#{team[:average]}%"
+            %td.leaderboard-table__games-average
+              = "#{team[:elo]}"

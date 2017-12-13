@@ -3,8 +3,8 @@ class LeaderboardsController < ApplicationController
 
   def index
     @game_count = Game.all.count
-    @teams = LeaderboardStats::Leaderboard.new(Team.all).team_leaderboard
-    @players = LeaderboardStats::Leaderboard.new(nil, Player.all).player_leaderboard
+    @teams = LeaderboardStats::Leaderboard.new(Team.order(elo_ranking: :desc)).team_leaderboard
+    @players = LeaderboardStats::Leaderboard.new(nil, Player.order(elo_ranking: :desc)).player_leaderboard
   end
 
 end
