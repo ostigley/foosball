@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170706082615) do
+ActiveRecord::Schema.define(version: 20171213061133) do
 
   create_table "games", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20170706082615) do
   end
 
   create_table "games_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "game_id", null: false
-    t.integer "team_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "team_id", null: false
     t.index ["game_id", "team_id"], name: "index_games_teams_on_game_id_and_team_id"
     t.index ["team_id", "game_id"], name: "index_games_teams_on_team_id_and_game_id"
   end
@@ -55,13 +55,14 @@ ActiveRecord::Schema.define(version: 20170706082615) do
   end
 
   create_table "players_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "player_id", null: false
-    t.integer "team_id", null: false
+    t.bigint "player_id", null: false
+    t.bigint "team_id", null: false
   end
 
   create_table "teams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "elo_ranking", limit: 24, default: 100000.0
   end
 
   create_table "winners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
