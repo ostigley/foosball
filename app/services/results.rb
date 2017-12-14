@@ -21,22 +21,21 @@ module Results
     end
 
     def generate_elo_rankings
-      team_1 = @game.teams.first
-      team_2 = @game.teams.second
+      better_team, worse_team = @game.teams.order(elo_ranking: :desc)
 
-      elo_result = if @game.winner.team === team_1
-                    team_1.elo_ranking - team_2.elo_ranking
+      elo_result = if @game.winner.team === better_team
+                    better_team.elo_ranking - worse_team.elo_ranking
                   else
-                    team_2.elo_ranking - team_2.elo_ranking
+                    worse_team.elo_ranking - better_team.elo_ranking
                   end
 
       elo_exchange = ELO_EXCHANGE_TABLE.select { |diff| diff === elo_result }.values.first
 
-      @game.winner.team.players.each do |player|
+      @game.winner_players.each do |player|
         player.update_attribute(:elo_ranking, player.elo_ranking + elo_exchange)
       end
 
-      @game.loser.team.players.each do |player|
+      @game.loser_players.each do |player|
         player.update_attribute(:elo_ranking, player.elo_ranking - elo_exchange)
       end
 
