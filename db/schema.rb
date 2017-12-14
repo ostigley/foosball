@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20171213062804) do
   end
 
   create_table "games_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "game_id", null: false
-    t.bigint "team_id", null: false
+    t.integer "game_id", null: false
+    t.integer "team_id", null: false
     t.index ["game_id", "team_id"], name: "index_games_teams_on_game_id_and_team_id"
     t.index ["team_id", "game_id"], name: "index_games_teams_on_team_id_and_game_id"
   end
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 20171213062804) do
   end
 
   create_table "players_teams", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "player_id", null: false
-    t.bigint "team_id", null: false
+    t.integer "player_id", null: false
+    t.integer "team_id", null: false
   end
 
   create_table "teams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
