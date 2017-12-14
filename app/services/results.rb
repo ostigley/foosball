@@ -4,43 +4,7 @@ module Results
     def initialize(game)
 
       @game = game
-      @exchange_table = {
-        -10..-1 => 16,
-        -32..-11 => 17,
-        -54..-33 => 18,
-        -77..-55 => 19,
-        -100..-78 => 20,
-        -124..-101 => 21,
-        -149..-125 => 22,
-        -176..-150 => 23,
-        -205..-177 => 24,
-        -237..-206 => 25,
-        -273..-238 => 26,
-        -314..-274 => 27,
-        -364..-315 => 28,
-        -428..-365 => 29,
-        -523..-429 => 30,
-        -719..-524 => 31,
-        -1000000000..-720 => 32,
-
-        0..10 => 16,
-        11..32 => 15,
-        33..54 => 14,
-        55..77 => 13,
-        78..100 => 12,
-        101..124 => 11,
-        125..149 => 10,
-        150..176 => 9,
-        177..205 => 8,
-        206..237 => 7,
-        238..273 => 6,
-        274..314 => 5,
-        315..364 => 4,
-        365..428 => 3,
-        429..523 => 2,
-        524..719 => 1,
-        720..1000000000 => 0
-      }
+      ELO_EXCHANGE_TABLE
     end
 
     def set_winner(winner_id, loser_id)
@@ -66,7 +30,7 @@ module Results
                     team_2.elo_ranking - team_2.elo_ranking
                   end
 
-      elo_exchange = @exchange_table.select { |diff| diff === elo_result }.values.first
+      elo_exchange = ELO_EXCHANGE_TABLE.select { |diff| diff === elo_result }.values.first
 
       @game.winner.team.players.each do |player|
         player.update_attribute(:elo_ranking, player.elo_ranking + elo_exchange)
