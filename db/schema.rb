@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171213062804) do
+ActiveRecord::Schema.define(version: 20171214223928) do
 
   create_table "games", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
@@ -51,6 +51,10 @@ ActiveRecord::Schema.define(version: 20171213062804) do
     t.string "name"
     t.string "image"
     t.integer "elo_ranking", default: 1400
+    t.integer "played"
+    t.integer "won"
+    t.integer "lost"
+    t.float "average", limit: 24
     t.index ["email"], name: "index_players_on_email", unique: true
     t.index ["reset_password_token"], name: "index_players_on_reset_password_token", unique: true
   end
@@ -64,6 +68,10 @@ ActiveRecord::Schema.define(version: 20171213062804) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "elo_ranking", default: 1400
+    t.integer "played"
+    t.integer "won"
+    t.integer "lost"
+    t.float "average", limit: 24
   end
 
   create_table "winners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

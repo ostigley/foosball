@@ -25,17 +25,9 @@ class Player < ApplicationRecord
     end
   end
 
-  # def games
-  #   teams.map(&:games).flatten
-  # end
-
-  # def winner
-  #   teams.map(&:winner).flatten
-  # end
-
-  # def loser
-  #   teams.map(&:loser).flatten
-  # end
+  def update_played_won_lost
+    update_attributes(played: games.count, won: winner.count, lost: loser.count, average: (winner.count.to_f / games.count.to_f)*100.round(2))
+  end
 
   def team_name
     name
