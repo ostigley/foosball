@@ -16,7 +16,7 @@
           %th{:width => "150"} ELO Rating
       %tbody
         - @players.each do |player|
-          - next if (player.played.nil? || player.played < 5)
+          - next if (player.played.nil? || player.played < 1)
           %tr
             %td
               = player.name
