@@ -16,8 +16,13 @@ class Team < ApplicationRecord
   def team_name
     "#{players.first.name} & #{players.second.name}"
   end
+  alias_method :name, :team_name
 
   def image
     players.map(&:image).map { |image| "<img src=#{image}>" }.join(' ')
+  end
+
+  def update_played_won_lost
+    update_attributes(played: games.count, won: winner.count, lost: loser.count, average: (winner.count.to_f / games.count.to_f)*100.round(2))
   end
 end

@@ -91,5 +91,29 @@ RSpec.feature 'Updating a game winner', type: :feature do
     scenario 'sends an email to the losers' do
       expect(ActionMailer::Base.deliveries.count).to eq @email_count + 1
     end
+
+    scenario 'increases winning team elo' do
+      @game.reload
+      expect(@game.winner.team.elo_ranking).to eq 1416
+    end
+
+    scenario 'decreases losing team elo' do
+      @game.reload
+      expect(@game.loser.team.elo_ranking).to eq 1384
+    end
+
+    scenario 'increases winning players elo' do
+      @game.reload
+      @game.winner_players.each do |player|
+        expect(player.elo_ranking).to eq 1416
+      end
+    end
+
+    scenario 'decreases losing players elo' do
+      @game.reload
+      @game.loser_players.each do |player|
+        expect(player.elo_ranking).to eq 1384
+      end
+    end
   end
 end

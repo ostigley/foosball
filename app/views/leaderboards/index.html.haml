@@ -13,19 +13,23 @@
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
           %th{:width => "150"} Average
+          %th{:width => "150"} ELO Rating
       %tbody
         - @players.each do |player|
+          - next if (player.played.nil? || player.played < 5)
           %tr
             %td
-              = player[:name]
+              = player.name
             %td.leaderboard-table__games-played
-              = player[:played]
+              = player.played
             %td.leaderboard-table__games-won
-              = player[:won]
+              = player.won
             %td.leaderboard-table__games-lost
-              = player[:lost]
+              = player.lost
             %td.leaderboard-table__games-average
-              = "#{player[:average]}%"
+              = "#{player.average.round(0)}%"
+            %td.leaderboard-table__games-average
+              = player.elo_ranking
 
 .row
   .columns
@@ -38,16 +42,20 @@
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
           %th{:width => "150"} Average
+          %th{:width => "150"} ELO Rating
       %tbody
         - @teams.each do |team|
+          - next if (team.played.nil? || team.played < 5)
           %tr
             %td
-              = team[:name]
+              = team.name
             %td.leaderboard-table__games-played
-              = team[:played]
+              = team.played
             %td.leaderboard-table__games-won
-              = team[:won]
+              = team.won
             %td.leaderboard-table__games-lost
-              = team[:lost]
+              = team.lost
             %td.leaderboard-table__games-average
-              = "#{team[:average]}%"
+              = "#{team.average.round(0)}%"
+            %td.leaderboard-table__games-average
+              = "#{team.elo_ranking}"

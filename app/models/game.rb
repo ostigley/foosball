@@ -10,6 +10,11 @@ class Game < ApplicationRecord
 
   before_destroy :delete_wins_losses
 
+  after_save do
+    players.each(&:update_played_won_lost)
+    teams.each(&:update_played_won_lost)
+  end
+
   def delete_wins_losses
     winner.delete unless has_no_winner?
     loser.delete unless has_no_loser?
