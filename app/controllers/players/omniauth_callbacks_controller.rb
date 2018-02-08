@@ -1,6 +1,7 @@
 # Where we handle github and google oauth
 class Players::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def github
+    binding.pry
     # You need to implement the method below in your model (e.g. app/models/player.rb)
     @player = Player.from_omniauth(request.env["omniauth.auth"])
 
@@ -15,6 +16,7 @@ class Players::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
     def failure
+      binding.pry
       redirect_to root_path
     end
 end

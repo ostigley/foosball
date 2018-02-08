@@ -23,9 +23,23 @@ class TeamsController < ApplicationController
     @teams = Team.all
   end
 
+  def team_options
+    team1 = Team.find_by_id(team_params[:id])
+    teams = Team.team_options(team_params[:id])
+
+    available_players = teams.map(&:players).flatten.map do |player|
+      {
+        id: player.id,
+        name: player.name
+      }
+    end
+
+    render json: available_players.flatten.uniq, status: 200
+  end
+
   private
 
   def team_params
-    params.require(:team).permit(:player_ids)
+    params.require(:team).permit(:player_ids, :id)
   end
 end
