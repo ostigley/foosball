@@ -3,5 +3,7 @@
     = label_tag(:teams, "Me and")
     = select_tag('game[team_ids][]', options_for_select(my_team_options), {class: 'my-team small-12 medium-2', prompt: 'choose team-mate', required: true})
     = label_tag(:teams, "beat")
-    = select_tag('game[team_ids][]', options_for_select(other_team_options), {class: 'other-team small-12 medium-3', prompt: 'choose losing team', required: true})
+    = select_tag('game[team_ids][]', nil, {class: 'other-player1 small-12 medium-3', prompt: 'choose opposing player', required: true})
+    = label_tag(:teams, " and ")
+    = select_tag('game[team_ids][]', nil, {class: 'other-player2 small-12 medium-3', prompt: 'choose other opposing player', required: true})
     = submit_tag("Yeah we did", id: 'submit-new-game')
