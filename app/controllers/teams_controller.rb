@@ -10,6 +10,7 @@ class TeamsController < ApplicationController
     @team = Team.new
     @team.players = [current_player]
     @team.players << Player.find_by_id(team_params[:player_ids])
+    @team.identifier = @team.generate_identifier
 
     if @team.save!
       redirect_to teams_path

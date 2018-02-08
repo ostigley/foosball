@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171214223928) do
+ActiveRecord::Schema.define(version: 20180208185651) do
 
   create_table "games", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20171214223928) do
     t.integer "won"
     t.integer "lost"
     t.float "average", limit: 24
+    t.string "identifier"
   end
 
   create_table "winners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

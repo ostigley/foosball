@@ -18,6 +18,12 @@ class Team < ApplicationRecord
   end
   alias_method :name, :team_name
 
+  def generate_identifier
+    identifier = ''
+    players.order(:email).map { |player| identifier << player.email }
+    identifier
+  end
+
   def image
     players.map(&:image).map { |image| "<img src=#{image}>" }.join(' ')
   end
