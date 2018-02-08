@@ -12,9 +12,10 @@ class TeamsController < ApplicationController
     @team.players << Player.find_by_id(team_params[:player_ids])
     @team.identifier = @team.generate_identifier
 
-    if @team.save!
+    if @team.save
       redirect_to teams_path
     else
+      flash[:alert] = @team.errors.full_messages.to_sentence
       render :new
     end
   end
