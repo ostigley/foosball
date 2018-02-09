@@ -13,6 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails'
 gem 'devise'
 gem 'foundation-rails'
+gem 'giphy'
 gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
@@ -33,7 +34,10 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'site_prism'
+  gem 'capybara-selenium'
+  gem 'chromedriver-helper'
 end
+
 
 group :development do
   gem 'letter_opener'

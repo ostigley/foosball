@@ -5,6 +5,7 @@ class WinnerMailer < ApplicationMailer
     @game = game
     @losers = @game.loser_players
     @winners = @game.winner_team_name
+    @loser_giphy = Giphy.search('loser', {limit: 100}).sample.original_image.url
 
     mail(to: @losers.map(&:email), subject: 'Foosball loser confirmation')
   end

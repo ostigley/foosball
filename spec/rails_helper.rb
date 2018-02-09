@@ -6,6 +6,7 @@ require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production? || Rails.env.development?
 require 'rspec/rails'
+require "selenium/webdriver"
 require 'capybara'
 require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
@@ -13,19 +14,34 @@ require 'capybara/poltergeist'
 require 'site_prism'
 
 ActiveRecord::Migration.maintain_test_schema!
-Capybara.javascript_driver = :poltergeist
+
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu) }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.javascript_driver = :chrome
+
+
+
 Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
   "screenshot_#{example.description.tr(' ', '-').gsub(%r{^.*\/spec\/}, '')}"
 end
 Capybara::Screenshot.prune_strategy = :keep_last_run
 Capybara.asset_host = 'http://localhost:3000'
 
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, js_errors: false)
-end
 # Cannot get webkit/selenium working on the Gitlab-CI so using PhantomJS
 # This is definitely going to cause some weird test failures in the future I'm sure, but yolo
-Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
 

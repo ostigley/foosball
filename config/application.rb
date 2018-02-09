@@ -20,5 +20,11 @@ module Foosball
         ENV[key.to_s] = value
       end if File.exists?(env_file)
     end
+
+    Giphy::Configuration.configure do |config|
+      #config.version = THE_API_VERSION
+      config.api_key = 'ADpiQpdZ0mFwt81yVUfuek4Ai6uh1owX'
+    end
+
   end
 end
