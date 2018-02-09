@@ -12,7 +12,6 @@
           %th{width: '150'} Played
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
-          %th{:width => "150"} Average
           %th{:width => "150"} ELO Rating
       %tbody
         - @players.each do |player|
@@ -26,8 +25,6 @@
               = player.won
             %td.leaderboard-table__games-lost
               = player.lost
-            %td.leaderboard-table__games-average
-              = "#{player.average.round(0)}%"
             %td.leaderboard-table__games-average{:class => (player.elo_ranking < 1400) ? "red" : "green"}
               = "#{player.elo_ranking}"
 
@@ -41,7 +38,6 @@
           %th{width: '150'} Played
           %th{:width => "150"} Won
           %th{:width => "150"} Lost
-          %th{:width => "150"} Average
           %th{:width => "150"} ELO Rating
       %tbody
         - @teams.each do |team|
@@ -55,7 +51,5 @@
               = team.won
             %td.leaderboard-table__games-lost
               = team.lost
-            %td.leaderboard-table__games-average
-              = "#{team.average.round(0)}%"
             %td.leaderboard-table__games-average{:class => (team.elo_ranking < 1400) ? "red" : "green"}
               = "#{team.elo_ranking}"
