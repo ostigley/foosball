@@ -8,7 +8,6 @@ class Team < ApplicationRecord
   validates_associated :players
   validates :players, length: { is: 2,
                                 message: 'A team needs exactly two players' }
-  validates :identifier, uniqueness: { message: 'This team already exists' }
 
   scope :exclude_player_teams, ->(signed_in_player_teams, teams = Team.all) {
     teams - signed_in_player_teams
