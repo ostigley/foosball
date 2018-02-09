@@ -1,6 +1,6 @@
-const generateOptions = playerArray => {
+const generateOptions = function (playerArray) {
   const otherPlayerSelect = $('select.other-player1')
-  return playerArray.map( player => {
+  return playerArray.map( function(player) {
     const option = $('<option></option>')
     option.val(player.id)
     option.text(player.name)
@@ -21,10 +21,10 @@ $(function() {
       },
       method: 'GET',
       success: function (res) {
-        generateOptions(res).map( option => {
+        generateOptions(res).map( function(option) {
           return $('.other-player1').append(option)
         })
-        generateOptions(res).map( option => {
+        generateOptions(res).map( function(option) {
           return $('.other-player2').append(option)
         })
       }
