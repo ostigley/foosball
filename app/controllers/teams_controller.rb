@@ -27,8 +27,9 @@ class TeamsController < ApplicationController
   def team_options
     team1 = Team.find_by_id(team_params[:id])
     teams = Team.team_options(team_params[:id])
+    no_mates = Player.select { |player| player.teams.count == 0 }
 
-    available_players = teams.map(&:players).flatten.map do |player|
+    available_players = teams.map(&:players).push(no_mates).flatten.map do |player|
       {
         id: player.id,
         name: player.name

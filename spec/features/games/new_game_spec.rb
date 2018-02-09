@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature 'New game page', type: :feature, js: true do
   let(:new_game_page) { NewGame.new }
   let(:sign_in_page) { SignInPage.new }
-
+  let(:player_without_a_team) { create(:player) }
   let(:signed_in_player) { create(:player) }
 
   context 'for non-logged in users' do
@@ -29,27 +29,30 @@ RSpec.feature 'New game page', type: :feature, js: true do
 
     context 'the new team form' do
       scenario 'renders the list of my teams' do
-        expect(new_game_page).to have_my_teams count: 2
+        expect(new_game_page).to have_my_teams_players count: 2
       end
 
-      scenario 'renders the list of oposition teams' do
-        expect(new_game_page.other_teams.count).to eq 5
+      scenario 'chosing a team mate renders a unique list of possible opposing players' do
+        expect(new_game_page.other_player_1.count).to eq 1
+        new_game_page.my_team_select.select(Player.first.name)
+        sleep 1
+
+        expect(new_game_page.other_player_1.count).to eq 7 # 6 players plus the instruction
+
+        unique_check = new_game_page.other_player_1.map(&:text).uniq.length == new_game_page.other_player_1.length
+        expect(unique_check).to be true
       end
     end
 
     context 'creating a new game' do
-      context 'selecting a team mate' do
-        scenario 'removes all team mates other teams from the list' do
-          expect(new_game_page.other_teams.count).to eq 5
-          new_game_page.my_team_select.select(Player.first.name)
-          expect(new_game_page.other_teams.count).to eq 4
-        end
-      end
-
       context 'creating a new game that i won' do
         before do
           new_game_page.my_team_select.select(Player.first.name)
-          new_game_page.other_team_select.select(Team.second.team_name)
+          sleep 1
+          new_game_page.other_player_1_select.select(new_game_page.other_player_1.last.text)
+          sleep 1
+          new_game_page.other_player_2_select.select(new_game_page.other_player_2.last.text)
+
           expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
         end
 
@@ -67,6 +70,42 @@ RSpec.feature 'New game page', type: :feature, js: true do
           expect(winner_players.include?(signed_in_player)).to eq true
         end
       end
+
+
+      # context 'against a team that doesn\'t exist' do
+
+      #   before do
+      #     player_without_a_team.save
+      #     puts '****'
+      #     puts player_without_a_team.name
+
+      #     new_game_page.my_team_select.select(Player.first.name)
+      #     sleep 1
+      #     new_game_page.other_player_1_select.select(new_game_page.other_player_1.second.text)
+
+      #     new_game_page.other_player_2_select.select(player_without_a_team.name)
+
+      #     # expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
+      #   end
+
+      #   scenario 'generates a new team for that player' do
+      #     expect(player_without_a_team.teams).to eq 1
+      #   end
+
+      #   scenario 'renders the root path' do
+      #     expect(page.current_path).to eq root_path
+      #   end
+
+      #   scenario 'creates a game on the db' do
+      #     expect(Game.count).to eq 1
+      #     expect(Game.first.has_winner?).to eq true
+      #   end
+
+      #   scenario 'sets a game winner to my team' do
+      #     winner_players = Game.first.winner_players
+      #     expect(winner_players.include?(signed_in_player)).to eq true
+      #   end
+      # end
     end
   end
 end

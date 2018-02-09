@@ -52,8 +52,12 @@ class GamesController < ApplicationController
 
   def fetch_team_ids
     team1 = game_params[:team_ids].first
-    team2 = Team.by_player_ids(game_params['team_ids'].last(2)).first.id
-    [team1, team2]
+    team2 = Team.by_player_ids(game_params['team_ids'].last(2)).first || generate_new_team
+    [team1, team2.id]
+  end
+
+  def generate_new_team
+    Team.create(player_ids: game_params['team_ids'].last(2))
   end
 
   def game_params

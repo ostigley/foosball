@@ -36,7 +36,7 @@ $(function() {
 
     $('.other-player2 option').each(function() {
       if($(this).val() === team2player1Id ) {
-        $(this).css('display', 'none')
+        $(this).remove()
       } else {
         $(this).css('display', 'block')
       }

@@ -34,7 +34,10 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'site_prism'
+  gem 'capybara-selenium'
+  gem 'chromedriver-helper'
 end
+
 
 group :development do
   gem 'letter_opener'
