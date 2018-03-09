@@ -23,6 +23,8 @@ gem 'omniauth-google-oauth2'
 gem 'simple_form'
 gem 'turbolinks', '~> 5'
 
+
+
 gem 'faker', branch: 'master', git: 'https://github.com/stympy/faker.git'
 group :development, :test do
   gem 'better_errors'
@@ -46,6 +48,12 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
   gem 'rack-mini-profiler'
+
+    gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rbenv', '~> 2.1'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
