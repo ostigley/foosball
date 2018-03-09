@@ -17,3 +17,12 @@ test: &test
 test: &test
   <<: *default
   database: foosball_test
+
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  host: 'AWS_RDS_HOST'
+  username: 'AWS_RDS_USR'
+  password: 'AWS_RDS_PWD'
