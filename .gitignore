@@ -23,3 +23,5 @@ config/local_env.yml
 /yarn-error.log
 
 .byebug_history
+
+.elasticbeanstalk/**
