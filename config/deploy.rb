@@ -3,9 +3,15 @@ lock "~> 3.10.1"
 set :application, "foosball"
 set :repo_url, "https://github.com/ostigley/foosball.git"
 
+set :pty, true
+
+set :ssh_options, {
+  forward_agent: true,
+  auth_methods: ["publickey"],
+  keys: ["~/.ssh/id_rsa.pub"]
+}
 set :branch, :aws
 set :deploy_to, '/home/deploy/foosball'
-set :pty, true
 set :linked_files, %w{config/database.yml config/application.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
 set :keep_releases, 2
