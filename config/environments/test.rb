@@ -40,4 +40,5 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   K_VALUE = 32
+  HOST = 'http://localhost:3000'
 end

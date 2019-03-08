@@ -53,4 +53,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   K_VALUE = 32
+  HOST = 'http://localhost:3000'
 end
