@@ -35,10 +35,9 @@ RSpec.feature 'New game page', type: :feature, js: true do
       scenario 'chosing a team mate renders a unique list of possible opposing players' do
         expect(new_game_page.other_player_1.count).to eq 1
         new_game_page.my_team_select.select(Player.first.name)
-        sleep 1
+        sleep 0.25
 
-        expect(new_game_page.other_player_1.count).to eq 7 # 6 players plus the instruction
-
+        expect(new_game_page.other_player_1.count).to eq 9 # 8 players plus the placeholder
         unique_check = new_game_page.other_player_1.map(&:text).uniq.length == new_game_page.other_player_1.length
         expect(unique_check).to be true
       end
@@ -48,9 +47,9 @@ RSpec.feature 'New game page', type: :feature, js: true do
       context 'creating a new game that i won' do
         before do
           new_game_page.my_team_select.select(Player.first.name)
-          sleep 1
+          sleep 0.25
           new_game_page.other_player_1_select.select(new_game_page.other_player_1.last.text)
-          sleep 1
+          sleep 0.25
           new_game_page.other_player_2_select.select(new_game_page.other_player_2.last.text)
 
           expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
@@ -71,21 +70,18 @@ RSpec.feature 'New game page', type: :feature, js: true do
         end
       end
 
-
       # context 'against a team that doesn\'t exist' do
-
       #   before do
-      #     player_without_a_team.save
-      #     puts '****'
-      #     puts player_without_a_team.name
+      #     # player_without_a_team.save
+      #     # puts player_without_a_team.name
 
       #     new_game_page.my_team_select.select(Player.first.name)
-      #     sleep 1
+      #     sleep 0.25
       #     new_game_page.other_player_1_select.select(new_game_page.other_player_1.second.text)
 
       #     new_game_page.other_player_2_select.select(player_without_a_team.name)
 
-      #     # expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
+      #     expect { new_game_page.submit_button.click }.to change{ActionMailer::Base.deliveries.count}.by 1
       #   end
 
       #   scenario 'generates a new team for that player' do
