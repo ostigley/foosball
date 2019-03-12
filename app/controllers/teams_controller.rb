@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class TeamsController < ApplicationController
-  before_action :require_login, only: [:new, :create]
+  before_action :require_login, only: %i[new create]
 
   def new
     @team = Team.new
@@ -25,9 +27,8 @@ class TeamsController < ApplicationController
   end
 
   def team_options
-    team1 = Team.find_by_id(team_params[:id])
     teams = Team.team_options(team_params[:id])
-    no_mates = Player.select { |player| player.teams.count == 0 }
+    no_mates = Player.select { |player| player.teams.count.zero? }
 
     available_players = teams.map(&:players).push(no_mates).flatten.map do |player|
       {
@@ -38,7 +39,6 @@ class TeamsController < ApplicationController
 
     render json: available_players.flatten.uniq, status: 200
   end
-
 
   private
 

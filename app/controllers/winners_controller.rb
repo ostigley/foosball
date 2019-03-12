@@ -1,19 +1,22 @@
+# frozen_string_literal: true
+
 # Winners controller
 class WinnersController < ApplicationController
   include Results
-  before_action :require_login, only: [:edit, :update]
-  before_action :find_winner, only: [:edit, :update]
-  before_action :find_winning_game, only: [:edit, :update]
-  before_action :game_needs_update, only: [:edit, :update]
+  before_action :require_login, only: %i[edit update]
+  before_action :winner, only: %i[edit update]
+  before_action :find_winning_game, only: %i[edit update]
+  before_action :game_needs_update, only: %i[edit update]
 
-  def edit
-  end
+  def edit; end
 
   def update
     confirmation = winner_params[:confirmed]
     if Results::Result.new(@game).confirm_winner(@winner, confirmation)
       redirect_to root_path
       flash[:notice] = 'The leader board has been updated with your loss'
+    else
+      redirect_to winners_edit_path(id: @winner.id)
     end
   end
 
@@ -35,16 +38,15 @@ class WinnersController < ApplicationController
     params.require(:winner).permit(:confirmed, :token)
   end
 
-  def find_winner
+  def winner
     @winner ||= Winner.find_by_id(params[:id])
   end
 
   def game_needs_update
-    redirect_to root_path unless (!@winner.confirmed? && player_is_loser?)
+    redirect_to root_path unless !@winner.confirmed? && player_is_loser?
   end
 
   def find_winning_game
     @game = @winner.game
   end
-
 end

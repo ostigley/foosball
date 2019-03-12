@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Player (user) model
 class Player < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -26,7 +28,12 @@ class Player < ApplicationRecord
   end
 
   def update_played_won_lost
-    update_attributes(played: games.count, won: winner.count, lost: loser.count, average: (winner.count.to_f / games.count.to_f)*100.round(2))
+    update_attributes(
+      played: games.count,
+      won: winner.count,
+      lost: loser.count,
+      average: (winner.count.to_f / games.count.to_f) * 100.round(2)
+    )
   end
 
   def team_name

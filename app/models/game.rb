@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Game Model
 class Game < ApplicationRecord
   has_one :winner
@@ -22,6 +24,7 @@ class Game < ApplicationRecord
 
   def unique_players
     return if players.uniq.length == players.length
+
     errors.add(:teams, 'must have a unique set of players')
   end
 
@@ -29,7 +32,7 @@ class Game < ApplicationRecord
     teams.map(&:players).flatten
   end
 
-  [:loser, :winner].each do |relationship|
+  %i[loser winner].each do |relationship|
     # loser_players && winner_players
     define_method("#{relationship}_players".to_sym) do
       send(relationship).team.players

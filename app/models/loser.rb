@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Loser Model
 class Loser < ApplicationRecord
   belongs_to :game

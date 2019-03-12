@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 # Games controller
 class GamesController < ApplicationController
   include Results
 
   before_action :require_login
-  before_action :find_game, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_if_player_not_in_game, only: [:edit, :update, :destroy]
-  before_action :game_completed, only: [:edit, :update]
+  before_action :game, only: %i[show edit update destroy]
+  before_action :redirect_if_player_not_in_game, only: %i[edit update destroy]
+  before_action :game_completed, only: %i[edit update]
   before_action :select_team, only: [:update]
 
   def new
@@ -19,7 +21,7 @@ class GamesController < ApplicationController
 
     if @game.save && Results::Result.new(@game).set_winner(team_ids.first, team_ids.second)
       WinnerMailer.email_losers(@game).deliver_now
-      flash[:notice] = 'Your game won\'t show on the leaderboard until the losers confirm this result' unless player_is_loser?
+      flash[:notice] = 'Result won\'t show on leaderboard until the losers confirm this result' unless player_is_loser?
       redirect_to root_path
     else
       flash[:alert] = @game.errors.full_messages.to_sentence
@@ -32,20 +34,17 @@ class GamesController < ApplicationController
   end
 
   def show
-    if (@game.has_no_winner? && player_in_game?) || (@game.has_winner? && @game.un_confirmed? && player_is_loser?)
-      redirect_to(edit_games_path(id: params[:id]))
-    end
+    redirect_to(edit_games_path(id: params[:id])) if game_needs_updating
   end
 
   def edit
-    redirect_to winners_edit_path({ id: @game.winner.id }) if @game.un_confirmed?
+    redirect_to winners_edit_path(id: @game.winner.id) if @game.un_confirmed?
   end
 
   def destroy
-    if @game.destroy
-      flash[:success] = 'Game deleted'
-      redirect_to games_index_path
-    end
+    @game.destroy
+    flash[:success] = 'Game deleted'
+    redirect_to games_index_path
   end
 
   private
@@ -56,12 +55,16 @@ class GamesController < ApplicationController
     [team1, team2.id]
   end
 
+  def game_needs_updating
+    (@game.has_no_winner? && player_in_game?) || (@game.has_winner? && @game.un_confirmed? && player_is_loser?)
+  end
+
   def generate_new_team
     Team.create(player_ids: game_params['team_ids'].last(2))
   end
 
   def game_params
-    params.require(:game).permit(:id, :team_id, :winner, :team_ids => [])
+    params.require(:game).permit(:id, :team_id, :winner, team_ids: [])
   end
 
   def game_completed

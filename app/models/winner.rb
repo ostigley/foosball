@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Winner Model
 class Winner < ApplicationRecord
   has_secure_token

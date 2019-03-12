@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Team model
 class Team < ApplicationRecord
   has_many :winner
@@ -13,7 +15,9 @@ class Team < ApplicationRecord
     teams - signed_in_player_teams
   }
 
-  scope :by_player_ids, ->(ids) { joins(:players).where(players: { id: ids }).group(:id).having('count(1) = ?', ids.count) }
+  scope :by_player_ids, ->(ids) do
+    joins(:players).where(players: { id: ids }).group(:id).having('count(1) = ?', ids.count)
+  end
 
   scope :team_options, ->(team_id) {
     team = find_by_id(team_id)
@@ -25,7 +29,7 @@ class Team < ApplicationRecord
   def team_name
     "#{players.first.name} & #{players.second.name}"
   end
-  alias_method :name, :team_name
+  alias name team_name
 
   def generate_identifier
     identifier = ''
@@ -38,6 +42,11 @@ class Team < ApplicationRecord
   end
 
   def update_played_won_lost
-    update_attributes(played: games.count, won: winner.count, lost: loser.count, average: (winner.count.to_f / games.count.to_f)*100.round(2))
+    update_attributes(
+      played: games.count,
+      won: winner.count,
+      lost: loser.count,
+      average: (winner.count.to_f / games.count.to_f) * 100.round(2)
+    )
   end
 end

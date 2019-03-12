@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
   # Don't forget to edit this file to adapt it to your needs (specially
@@ -46,7 +48,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     b.wrapper :container_wrapper, tag: 'div', class: 'small-offset-3 small-9 columns' do |ba|
-      ba.wrapper :tag => 'label', :class => 'checkbox' do |bb|
+      ba.wrapper tag: 'label', class: 'checkbox' do |bb|
         bb.use :input
         bb.use :label_text
       end
@@ -63,6 +65,7 @@ SimpleForm.setup do |config|
   # Note that you need to adapt this wrapper to your needs. If you need a 4
   # columns form then change the wrapper class to 'small-3', if you need
   # only two use 'small-6' and so on.
+  options = 
   config.wrappers :inline_form, tag: 'div', class: 'column small-4', hint_class: :field_with_hint, error_class: :error do |b|
     b.use :html5
     b.use :placeholder

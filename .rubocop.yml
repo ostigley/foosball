@@ -1,0 +1,19 @@
+AllCops:
+  Exclude:
+  - 'Gemfile'
+  - 'spec/**/**/**/*'
+  - 'db/**/**/*'
+  - 'bin/*'
+  - 'config/environments/*'
+  - 'lib/tasks/*'
+  - 'config/initializers/*'
+
+Style/Documentation:
+  Enabled: false
+Style/Lambda:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+
+Metrics/AbcSize:
+  Max: 20

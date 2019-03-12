@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'games/new'
   get 'games/index'
@@ -23,11 +25,11 @@ Rails.application.routes.draw do
   patch 'winners', to: 'winners#update'
   get 'winners/confirmation', to: 'winners#confirmation_token'
 
-  devise_for :players, :controllers => { :omniauth_callbacks => "players/omniauth_callbacks" }
+  devise_for :players, controllers: { omniauth_callbacks: 'players/omniauth_callbacks' }
 
   devise_scope :player do
-    get 'sign_in', :to => 'devise/sessions#new', :as => :new_player_session
-    get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_player_session
+    get 'sign_in', to: 'devise/sessions#new', as: :new_player_session
+    get 'sign_out', to: 'devise/sessions#destroy', as: :destroy_player_session
   end
 
   root to: 'leaderboards#index'
